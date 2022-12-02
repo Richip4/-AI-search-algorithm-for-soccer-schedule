@@ -1,30 +1,41 @@
 from parser import parser
+from and_tree import *
+from checks import *
+
+def a_tree(node):
+    # if all children are solved then solve yourself & move up
+    if not check_hard_constraints(node):
+        node.solved = True
+        node = node.parent
+    elif is_complete_schedule(node):
+        check_save(node)
+        node.solved = True
+        node = node.parent
+    else:
+        #div(node)
+        for child in node.children:
+            if not child.solved:
+                a_tree(node)
 
 
-def main():
-    print("hello world!!")
-
-'''def tree_search(initial_problem_state, search_strategy):
-    # initialize search tree using initial state of the problem
-    while True:
-        if there are no candidates for expansion:
-            return False
-        node = search_strategy.get_node_for_expansion() # choose a leaf node according to the search_strategy
-        if node.contains_goal_state():
-            return solution
-        else:
-            node.expand()
-            child_nodes = node.children
-            add_to_search_tree(child_nodes)'''
+best_score = 9999999
+def check_save(node):
+    score = check_soft_constraints(node)
+    global best_score
+    if score < best_score:
+        global best_node
+        best_node = node
+        best_score= score
 
 gameSlots, practiceSlots, games, practices, notCompatible, unwanted, preferences, pair, partialAssignments = parser()
 
-print("games slot:", gameSlots)
-print("practice slot:", practiceSlots)
-print("games:", games)
-print("practices:", practices)
-print("not compatible:", notCompatible)
-print("unwanted:", unwanted)
-print("preferences:", preferences)
-print("pair:", pair)
-print("partial assignments:", partialAssignments)
+initial_input = {}
+for part_assign in partialAssignments:
+    if part_assign[1] in initial_input:
+        initial_input[part_assign[1]].append(part_assign[0])
+    else:
+        initial_input[part_assign[1]] = [ part_assign[0] ]
+
+and_tree = Tree(Node(initial_input, None))
+
+a_tree(and_tree.root)
