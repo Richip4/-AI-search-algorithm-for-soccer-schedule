@@ -1,3 +1,4 @@
+#def parser():
 gameSlots = []
 practiceSlots = []
 games = []
@@ -16,13 +17,21 @@ for i in range(0, len(lines)):
     if "game slots" in lines[i].lower():
         i = i + 1
         while lines[i] != "\n":
-            gameSlots.append(lines[i].replace("\n", ""))
+            lines[i] = lines[i].replace(" ", "")
+            lines[i] = lines[i].replace("\n", "")
+            lines[i] = lines[i].replace(",", " ", 1)
+            splited = lines[i].split(",")
+            gameSlots.append(splited)
             i = i + 1
 
     if "practice slots" in lines[i].lower():
         i = i + 1
         while lines[i] != "\n":
-            practiceSlots.append(lines[i].replace("\n", ""))
+            lines[i] = lines[i].replace(" ", "")
+            lines[i] = lines[i].replace("\n", "")
+            lines[i] = lines[i].replace(",", " ", 1)
+            splited = lines[i].split(",")
+            practiceSlots.append(splited)
             i = i + 1
 
     if "games" in lines[i].lower():
@@ -40,31 +49,43 @@ for i in range(0, len(lines)):
     if "not compatible" in lines[i].lower():
         i = i + 1
         while lines[i] != "\n":
-            notCompatible.append(lines[i].replace("\n", ""))
+            lines[i] = lines[i].replace("\n", "")
+            splited = lines[i].split(", ")
+            notCompatible.append(splited)
             i = i + 1
 
     if "unwanted" in lines[i].lower():
         i = i + 1
         while lines[i] != "\n":
-            unwanted.append(lines[i].replace("\n", ""))
+            lines[i] = lines[i].replace("\n", "")
+            splited = lines[i].split(", ")
+            unwanted.append(splited)
             i = i + 1
 
     if "preferences" in lines[i].lower():
         i = i + 1
         while lines[i] != "\n":
-            preferences.append(lines[i].replace("\n", ""))
+            lines[i] = lines[i].replace("\n", "")
+            lines[i] = lines[i].replace(", ", " ", 1)
+            splited = lines[i].split(", ")
+            preferences.append(splited)
             i = i + 1
 
     if "pair" in lines[i].lower():
         i = i + 1
         while lines[i] != "\n":
-            pair.append(lines[i].replace("\n", ""))
+            lines[i] = lines[i].replace("\n", "")
+            splited = lines[i].split(", ")
+            pair.append(splited)
             i = i + 1
 
     if "partial assignments" in lines[i].lower():
         i = i + 1
         while lines[i] != "\n":
-            partialAssignments.append(lines[i].replace("\n", ""))
+            lines[i] = lines[i].replace("\n", "")
+            splited = lines[i].split(", ", 1)
+            splited[1] = splited[1].replace(", ", " ")
+            partialAssignments.append(splited)
             i = i + 1
             if i == len(lines):
                 break
@@ -80,3 +101,4 @@ print("unwanted:", unwanted)
 print("preferences:", preferences)
 print("pair:", pair)
 print("partial assignments:", partialAssignments)
+#return gameSlots, practiceSlots, games, practices, notCompatible, unwanted, preferences, pair, partialAssignments
