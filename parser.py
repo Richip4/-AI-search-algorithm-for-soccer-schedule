@@ -91,7 +91,7 @@ def parser():
                     break
 
     inputFile.close()
-
+    '''
     print("games slot:", gameSlots)
     print("practice slot:", practiceSlots)
     print("games:", games)
@@ -100,5 +100,5 @@ def parser():
     print("unwanted:", unwanted)
     print("preferences:", preferences)
     print("pair:", pair)
-    print("partial assignments:", partialAssignments)
+    print("partial assignments:", partialAssignments)'''
     return gameSlots, practiceSlots, games, practices, notCompatible, unwanted, preferences, pair, partialAssignments
