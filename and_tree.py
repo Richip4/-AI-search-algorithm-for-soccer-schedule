@@ -1,11 +1,11 @@
 class Node:
-    element = {}
+    schedule = {}
     children = []
     parent = None
     solved = False
 
     def __init__(self, element, parent):
-        self.element = element
+        self.schedule = element
         self.parent = parent
 
 class Tree:
