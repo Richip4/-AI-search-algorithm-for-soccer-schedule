@@ -1,11 +1,13 @@
 class Node:
-    schedule = {}
+    game_schedule = {}
+    practice_schedule = {}
     children = []
     parent = None
     solved = False
 
-    def __init__(self, element, parent):
-        self.schedule = element
+    def __init__(self, games, practices, parent):
+        self.game_schedule = games
+        self.practice_schedule = practices
         self.parent = parent
 
 class Tree:
@@ -14,3 +16,13 @@ class Tree:
 
     def __init__(self, root):
         self.root = root
+
+class Session:
+    league = ""         # example: CSMA U17T1
+    division = 0        # example: 1
+    is_practice = False
+
+    def __init__(self, l, d, p):
+        self.league = l
+        self.division = d
+        self.is_practice = p
