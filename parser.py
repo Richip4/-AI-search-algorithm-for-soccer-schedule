@@ -1,3 +1,6 @@
+from and_tree import Session
+
+
 def parser():
     gameSlots = []
     practiceSlots = []
@@ -37,13 +40,19 @@ def parser():
         if "games" in lines[i].lower():
             i = i + 1
             while lines[i] != "\n":
-                games.append(lines[i].replace("\n", ""))
+                lines[i] = lines[i].replace("\n", "")
+                splited = lines[i].split(" ")
+                print(splited[0] + " " + splited[1])
+                games.append(Session(splited[0] + " " + splited[1], int(splited[3]), False))
                 i = i + 1
 
         if "practices" in lines[i].lower():
             i = i + 1
             while lines[i] != "\n":
-                practices.append(lines[i].replace("\n", ""))
+                lines[i] = lines[i].replace("\n", "")
+                splited = lines[i].split(" ")
+                print(splited[0] + " " + splited[1])
+                practices.append(Session(splited[0] + " " + splited[1], int(splited[3]), True))
                 i = i + 1
 
         if "not compatible" in lines[i].lower():
@@ -91,14 +100,16 @@ def parser():
                     break
 
     inputFile.close()
-    '''
+    
     print("games slot:", gameSlots)
     print("practice slot:", practiceSlots)
-    print("games:", games)
-    print("practices:", practices)
+    for i in range(len(games)):
+        print("game", i, ":", games[i])
+    for i in range(len(practices)):
+        print("practice", i, ":", practices[i])
     print("not compatible:", notCompatible)
     print("unwanted:", unwanted)
     print("preferences:", preferences)
     print("pair:", pair)
-    print("partial assignments:", partialAssignments)'''
+    print("partial assignments:", partialAssignments)
     return gameSlots, practiceSlots, games, practices, notCompatible, unwanted, preferences, pair, partialAssignments
