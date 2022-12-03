@@ -1,0 +1,81 @@
+NOTE: Eval value should be the same, the game/practices time slots may varied 
+based off how I got the result vs how the program gets the result. So the eval 
+value should be the same for the answer I got and what the program got. If the 
+eval value is different please let me know and save the answer the program got 
+and send it to me and I'll compare the two answers.
+
+------------------------------------------------------------------
+shortExampleValid: Based on provided input example in the pdf
+Notes: All hard constraints pass
+(in pref) TU, 10:00, CMSA U13T3 DIV 01 OPN 01, 5
+	- This practice does not exists and should be ignored
+(in pref) MO, 10:00, CMSA U13T3 DIV 02 OPN 02, 7
+	- This time slot does not exist for practices and should be ignored
+
+Input: shortExampleValid.txt 1 1 1 1 1 1 1 1
+Output:
+Eval-value: 6
+CMSA U13T3 DIV 01			:TU, 9:30
+CMSA U13T3 DIV 02			:TU, 9:30
+CUSA O18 DIV 01				:MO, 8:00
+CMSA U17T1 DIV 01			:MO, 8:00
+CMSA U13T3 DIV 01 PRC 01	:MO, 8:00
+CMSA U13T3 DIV 02 OPN 02	:FR, 10:00
+CUSA O18 DIV 01 PRC 01		:FR, 10:00
+CMSA U17T1 PRC 01			:MO, 8:00
+
+------------------------------------------------------------------
+gamemaxInvalid: Fail game max hard constraint
+Notes: 2 games to be slotted, only 1 game time slot where gamemax is 1
+Input: gamemaxInvalid.txt 1 1 1 1 1 1 1 1
+Output: None (Unable to create schedule as max number of games is exceed for MO, 8:00)
+
+------------------------------------------------------------------
+practicemaxInvalid: Fail practice max hard constraint
+Notes: 2 practices to be slotted, only 1 practice time slot where practicemax is 1
+Input: practicemaxInvalid.txt 1 1 1 1 1 1 1 1
+Output: None (Unable to create schedule as max number of practices is exceed for MO, 10:00)
+
+------------------------------------------------------------------
+sameDaySlotInvalid: Fail due to game and corresponding practice are at the same time and day
+Notes: Both game and practice are on the same day and time
+Input: sameDaySlotInvalid.txt 1 1 1 1 1 1 1 1
+Output: None (Unable to create schedule as game and practice for CMSA U13T3 DIV 01 are 
+at the same time)
+
+------------------------------------------------------------------
+overlappingTimeInvalid: Fail due to game and corresponding practice overlap in time
+Notes: Both game and practice are at the same time
+Input: overlappingTimeInvalid.txt 1 1 1 1 1 1 1 1
+Output: None (Unable to create schedule as game and practice for CMSA U13T3 DIV 01 
+overlap in time, game (TU 9:30-11:00), practice (TU 9:00-10:00))
+
+------------------------------------------------------------------
+notCompatGameInvalid: Failed notCompatible hard constraint
+Notes: Only 1 game time slot and 2 games that are not compatible
+Input: notCompatInvalid.txt 1 1 1 1 1 1 1 1
+Output: None (Unable to create schedule due to incompatible games)
+
+------------------------------------------------------------------
+notCompatPracticeInvalid: Failed notCompatible hard constraint
+Notes: Only 1 practice time slot and 2 practices that are not compatible
+Input: notCompatPracticeInvalid.txt 1 1 1 1 1 1 1 1
+Output: None (Unable to create schedule due to incompatible practices)
+
+------------------------------------------------------------------
+notCompatInvalid: Failed notCompatible hard constraint
+Notes: Incompatible game and practice at the same time
+Input: notCompatInvalid.txt 1 1 1 1 1 1 1 1
+Output: None (Unable to create schedule due to incompatible game and practice)
+
+------------------------------------------------------------------
+partAssignInvalid: Part assignments conflicts with notCompatible
+Input: partASsignInvalid.txt 1 1 1 1 1 1 1 1
+Output: None (Unable to create schedule due to incompatible game and practice due to 
+forced assignment)
+
+
+
+
+
+
