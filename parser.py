@@ -100,7 +100,12 @@ def parser():
                     break
 
     inputFile.close()
+<<<<<<< Updated upstream
     
+=======
+
+    '''
+>>>>>>> Stashed changes
     print("games slot:", gameSlots)
     print("practice slot:", practiceSlots)
     for i in range(len(games)):
@@ -112,4 +117,8 @@ def parser():
     print("preferences:", preferences)
     print("pair:", pair)
     print("partial assignments:", partialAssignments)
+<<<<<<< Updated upstream
+=======
+    '''
+>>>>>>> Stashed changes
     return gameSlots, practiceSlots, games, practices, notCompatible, unwanted, preferences, pair, partialAssignments
