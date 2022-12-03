@@ -1,11 +1,13 @@
 class Node:
-    schedule = {}
+    game_schedule = {}
+    practice_schedule = {}
     children = []
     parent = None
     solved = False
 
-    def __init__(self, element, parent):
-        self.schedule = element
+    def __init__(self, games, practices, parent):
+        self.game_schedule = games
+        self.practice_schedule = practices
         self.parent = parent
 
 class Tree:
@@ -14,8 +16,6 @@ class Tree:
 
     def __init__(self, root):
         self.root = root
-<<<<<<< Updated upstream
-=======
 
 class Session:
     league = ""         # example: CSMA U17T1
@@ -29,4 +29,3 @@ class Session:
 
     def __str__(self):
         return str(self.league) + " " + str(self.division) + " " + str(self.is_practice)
->>>>>>> Stashed changes
