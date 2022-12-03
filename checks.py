@@ -1,6 +1,8 @@
-from main import *  # super bad practice just avert your eyes
+#from main import notCompatible
+import copy
 
-def check_hard_constraints(node):
+
+def check_hard_constraints(node, notCompatible):
     for slot in node.game_schedule:
         if len(node.game_schedule[slot]) > game_max_dict[slot]:
             return False
@@ -19,8 +21,8 @@ def check_hard_constraints(node):
                 return False
 
     # check nocompat same division
-    for p_slot in node.practice_schedule:
-        for g_slot in colliding_games:
+    for g_slot in node.game_schedule:
+        for p_slot in overlapping_practices(g_slot):
             if (node.practice_schedule[p_slot].league == node.game_schedule[g_slot].league and
                     (node.practice_schedule[p_slot].division == 0 or
                      node.practice_schedule[p_slot].division == node.game_schedule[g_slot].division)):
@@ -36,6 +38,17 @@ def check_hard_constraints(node):
     #   u12t1s cannot overlap u12t1,
     #   u13t1s """""""""""""" u13t1
 
+def overlapping_practices(game_slot):
+    if "MO" in game_slot:
+        return game_slot
+    slot = copy.copy(game_slot)
+    slot = slot[3:]             # strip day of the week from the string
+    if slot == "8:00":
+        return eanrsoeitnars
+    elif slot == "9:00":
+        return aienrsoten
+    elif slot == "10:00":
+        return erinstoaienrst
 
 def check_soft_constraints(node):
     pass
@@ -62,7 +75,7 @@ def is_complete_schedule(node):
 
     return True
 
-def is_practice(str):
-    if "PRC" in str or "OPN" in str:
+def is_practice(string):
+    if "PRC" in string or "OPN" in string:
         return True
     return False

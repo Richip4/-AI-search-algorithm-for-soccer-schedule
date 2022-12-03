@@ -1,13 +1,13 @@
 from parser import parser
 from and_tree import *
-from checks import *
+import checks as checks
 
 def a_tree(node):
     # if all children are solved then solve yourself & move up
-    if not check_hard_constraints(node):
+    if not checks.check_hard_constraints(node, notCompatible):
         node.solved = True
         node = node.parent
-    elif is_complete_schedule(node):
+    elif checks.is_complete_schedule(node):
         check_save(node)
         node.solved = True
         node = node.parent
@@ -28,7 +28,7 @@ def check_save(node):
         if len(node.practice_schedule[slot]) < practice_min_dict[slot]:
             return False
 
-    score = check_soft_constraints(node)
+    score = checks.check_soft_constraints(node)
     global best_score
     if score < best_score:
         global best_node
@@ -54,7 +54,7 @@ for slot in practiceSlots:
 initial_game_input = {}
 initial_practice_input = {}
 for part_assign in partialAssignments:
-    if is_practice(part_assign[0]):
+    if checks.is_practice(part_assign[0]):
         if part_assign[1] in initial_practice_input:
             initial_practice_input[part_assign[1]].append(part_assign[0])
         else:
