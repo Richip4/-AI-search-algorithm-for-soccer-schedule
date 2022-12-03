@@ -26,7 +26,3 @@ class Session:
         self.league = l
         self.division = d
         self.is_practice = p
-
-    def __init__(self, l, p):
-        self.league = l
-        self.is_practice = p
