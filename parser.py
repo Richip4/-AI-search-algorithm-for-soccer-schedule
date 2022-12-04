@@ -1,5 +1,6 @@
 from and_tree import Session
 
+
 def parser():
     gameSlots = []
     practiceSlots = []
@@ -66,7 +67,8 @@ def parser():
             i = i + 1
             while lines[i] != "\n":
                 lines[i] = lines[i].replace("\n", "")
-                splited = lines[i].split(", ")
+                splited = lines[i].split(", ", 1)
+                splited[1] = splited[1].replace(", ", " ")
                 unwanted.append(splited)
                 i = i + 1
 
@@ -88,7 +90,7 @@ def parser():
                 i = i + 1
 
         if "partial assignments" in lines[i].lower():
-            #i = i + 1
+            # i = i + 1
             while lines[i] != "\n":
                 i = i + 1
                 if i == len(lines):
@@ -97,10 +99,9 @@ def parser():
                 splited = lines[i].split(", ", 1)
                 splited[1] = splited[1].replace(", ", " ")
                 partialAssignments.append(splited)
-                #i = i + 1
-                #if i == len(lines):
+                # i = i + 1
+                # if i == len(lines):
                 #    break
-                
 
     inputFile.close()
 
@@ -118,5 +119,5 @@ def parser():
     print("partial assignments:", partialAssignments)
     '''
     return gameSlots, practiceSlots, games, practices, notCompatible, unwanted, preferences, pair, partialAssignments
-    
-#parser()
+
+# parser()
