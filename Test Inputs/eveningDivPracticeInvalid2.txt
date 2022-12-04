@@ -1,0 +1,29 @@
+Name:
+eveningDivGameInvalid2
+
+Game slots:
+MO, 19:00, 3, 2
+TU, 9:30, 2, 1
+
+Practice slots:
+TU, 18:00,2,1
+FR, 12:00, 2, 1
+
+Games:
+CMSA U13T3 DIV 01
+CUSA O18 DIV 09
+
+Practices:
+CMSA U13T3 DIV 01 PRC 01
+CUSA O18 DIV 09 PRC 01
+
+Not compatible:
+
+Unwanted:
+
+Preferences:
+
+Pair:
+
+Partial assignments:
+CUSA O18 DIV 09 PRC 01, FR, 12:00

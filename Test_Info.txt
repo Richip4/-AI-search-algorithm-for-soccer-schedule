@@ -1,8 +1,38 @@
-NOTE: Eval value should be the same, the game/practices time slots may varied 
-based off how I got the result vs how the program gets the result. So the eval 
-value should be the same for the answer I got and what the program got. If the 
-eval value is different please let me know and save the answer the program got 
-and send it to me and I'll compare the two answers.
+NOTE: Eval value should be the same, the game/practices time slots may varied based 
+off how I got the result vs how the program gets the result. So the eval value should 
+be the same for the answer I got and what the program got. If the eval value is 
+different please let me know and save the answer the program got and send it to me 
+and I'll compare the two answers.
+
+------------------------------------------------------------------
+valid1: All games and practices are partial assigned
+Input: valid1.txt 1 1 1 1 1 1 1 1
+Output:
+Eval-value: 0
+CMSA U13T3 DIV 01			:MO, 12:00
+CSSC O19T1 DIV 01			:TU, 17:00
+CMSA U13T3 DIV 01 PRC 01	:TU, 14:00
+CSSC O19T1 DIV 01 PRC 01	:MO, 8:00
+
+------------------------------------------------------------------
+valid2: Handling pairs
+Input: valid2.txt 1 1 2 1 1 1 10 1
+Eval-value: 20
+CMSA U13T3 DIV 01			:TU, 17:00
+CSSC O19T1 DIV 01			:MO, 12:00
+CMSA U13T3 DIV 01 PRC 01	:MO, 12:00
+CSSC O19T1 DIV 01 PRC 01	:TU, 12:00
+
+------------------------------------------------------------------
+valid3: Handling preferences
+Note: Contains weird spacing between keywords
+Input: valid3.txt 1 1 1 1 1 1 1 1
+Output:
+Eval-value: 101
+CMSA U13T3 DIV 01			:TU, 17:00
+CSSC O19T1 DIV 01			:MO, 12:00
+CMSA U13T3 DIV 01 PRC 01	:TU, 15:00
+CSSC O19T1 DIV 01 PRC 01	:FR, 16:00
 
 ------------------------------------------------------------------
 shortExampleValid: Based on provided input example in the pdf
@@ -28,20 +58,23 @@ CMSA U17T1 PRC 01			:MO, 8:00
 gamemaxInvalid: Fail game max hard constraint
 Notes: 2 games to be slotted, only 1 game time slot where gamemax is 1
 Input: gamemaxInvalid.txt 1 1 1 1 1 1 1 1
-Output: None (Unable to create schedule as max number of games is exceed for MO, 8:00)
+Output: None (Unable to create schedule as max number of games is 
+exceed for MO, 8:00)
 
 ------------------------------------------------------------------
 practicemaxInvalid: Fail practice max hard constraint
 Notes: 2 practices to be slotted, only 1 practice time slot where practicemax is 1
 Input: practicemaxInvalid.txt 1 1 1 1 1 1 1 1
-Output: None (Unable to create schedule as max number of practices is exceed for MO, 10:00)
+Output: None (Unable to create schedule as max number of practices is 
+exceed for MO, 10:00)
 
 ------------------------------------------------------------------
-sameDaySlotInvalid: Fail due to game and corresponding practice are at the same time and day
+sameDaySlotInvalid: Fail due to game and corresponding practice are at the 
+same time and day
 Notes: Both game and practice are on the same day and time
 Input: sameDaySlotInvalid.txt 1 1 1 1 1 1 1 1
-Output: None (Unable to create schedule as game and practice for CMSA U13T3 DIV 01 are 
-at the same time)
+Output: None (Unable to create schedule as game and practice for 
+CMSA U13T3 DIV 01 are at the same time)
 
 ------------------------------------------------------------------
 overlappingTimeInvalid: Fail due to game and corresponding practice overlap in time
@@ -71,11 +104,117 @@ Output: None (Unable to create schedule due to incompatible game and practice)
 ------------------------------------------------------------------
 partAssignInvalid: Part assignments conflicts with notCompatible
 Input: partASsignInvalid.txt 1 1 1 1 1 1 1 1
-Output: None (Unable to create schedule due to incompatible game and practice due to 
-forced assignment)
+Output: None (Unable to create schedule due to incompatible game and 
+practice due to forced assignment)
 
+------------------------------------------------------------------
+unwantedGameInvalid: Failed unwanted hard constraint
+Notes: Only 1 game time slot and 1 game which does not want that time slot
+Input: unwantedGameInvalid.txt 1 1 1 1 1 1 1 1
+Output: None (Can't make schedule due to unwanted game time slot)
 
+------------------------------------------------------------------
+unwantedPracticeInvalid: Failed unwanted hard constraint
+Notes:  Only 1 practice time slot and 1 practice which does not want that time slot
+Input: unwantedPracticeInvalid.txt 1 1 1 1 1 1 1 1
+Output: None (Can't make schedule due to unwanted practice time slot)
 
+------------------------------------------------------------------
+unwantedAssignedInvalid: Failed unwanted hard constraint
+Notes: A game is part assigned to a slot that is also unwanted
+Input: unwantedAssignedInvalid.txt 1 1 1 1 1 1 1 1
+Output: None (Conflict of hard constrains part assignment and unwanted
 
+------------------------------------------------------------------
+eveningDivGameInvalid1: Failed hard constraint that all DIV9+ are 
+assigned evening slots
+Notes: No evening slots are available
+Input: eveningDivGameInvalid1.txt 1 1 1 1 1 1 1 1
+Output: None (DIV9+ game could not be assigned an evening slot)
 
+------------------------------------------------------------------
+eveningDivGameInvalid2: Failed hard constraint that all DIV9+ are 
+assigned evening slots
+Notes: A DIV9+ game was part assigned to a non evening slot
+Input: eveningDivGameInvalid2.txt 1 1 1 1 1 1 1 1
+Output: None
 
+------------------------------------------------------------------
+eveningDivPracticeInvalid1: Failed hard constraint that all DIV9+ are 
+assigned evening slots
+Notes: No evening slots are available
+Input: eveningDivPracticeInvalid1.txt 1 1 1 1 1 1 1 1
+Output: None
+
+------------------------------------------------------------------
+eveningDivPracticeInvalid2: Failed hard constraint that all DIV9+ are 
+assigned evening slots
+Notes: A DIV9+ practice was part assigned to a non evening slot
+Input: eveningDivPracticeInvalid2.txt 1 1 1 1 1 1 1 1
+Output: None
+
+------------------------------------------------------------------
+tierOverlapInvalid1: Failed U15/U16/U17/U19 level games must be scheduled 
+into non-overlapping time slots constraint
+Notes: U15/U16 games, but only 1 game time slot
+Input: tierOverlapInvalid1.txt 1 1 1 1 1 1 1 1
+Output: None
+
+------------------------------------------------------------------
+tierOverlapInvalid2: Failed U15/U16/U17/U19 level games must be scheduled 
+into non-overlapping time slots constraint
+Notes: U16/U17 games both part assigned to the same game time slot
+Input: tierOverlapInvalid2.txt 1 1 1 1 1 1 1 1
+Output: None
+
+------------------------------------------------------------------
+tierOverlapInvalid3: Failed U15/U16/U17/U19 level games must be scheduled 
+into non-overlapping time slots constraint
+Notes: There are 2 game slots. U15 is part assigned a game slot and U17 does 
+not want the other game slot, resulting both to be assigned the same time slot
+Input: tierOverlapInvalid3.txt 1 1 1 1 1 1 1 1
+Output: None
+
+------------------------------------------------------------------
+meetingGameInvalid: Failed having no games on Tuesday 11:00-12:30
+Notes: Game is assigned to 11:00-12:30
+Input: meetingGameInvalid.txt 1 1 1 1 1 1 1 1
+Output: None
+
+------------------------------------------------------------------
+meetingPracticeValid: Passing hard constraints
+Input: meetingGameValid.txt 1 1 1 1 100 1 1 1
+Output:
+Eval-value: 100
+CMSA U13T3 DIV 01			:TU, 17:00
+CSSC O19T1 DIV 03			:TU, 17:00
+CMSA U13T3 DIV 01 PRC 01	:MO, 8:00
+CSSC O19T1 DIV 01 PRC 01	:MO, 8:00
+
+------------------------------------------------------------------
+specialInvalid1: CMSA U12T1S (practice must be at TU, 18:00-19:00) is not 
+allowed to overlap with any practices/games of CMSA U12T1
+Note: CMSA U12T1 DIV 01 game is forced assigned to TU, 17:00-18:30 which 
+overlaps CMSA U12T1S practice
+Input: specialInvalid1.txt 1 1 1 1 1 1 1 1
+Output: None
+
+------------------------------------------------------------------
+specialInvalid2: CMSA U13T1S (practice must be at TU, 18:00-19:00) is not 
+allowed to overlap with any practices/games of CMSA U13T1
+Note: CMSA U13T1 DIV 01 PRC 01 practice is forced assigned to TU, 18:00 
+which overlaps CMSA U12T1S practice
+Input: specialInvalid2.txt 1 1 1 1 1 1 1 1
+Output: None
+
+------------------------------------------------------------------
+specialValid1: CMSA U12T1S (practice must be at TU, 18:00-19:00) is not 
+allowed to overlap with any practices/games of CMSA U12T1
+Input: specialValid.txt 1 1 1 1 1 1 1 1
+Output:
+Eval-value: 0
+CMSA U13T3 DIV 01			:MO, 12:00
+CMSA U12T1 DIV 01			:MO, 12:00
+CMSA U13T3 DIV 01 PRC 01	:TU, 18:00
+CMSA U12T1 DIV 01 PRC 01	:FR, 10:00
+CMSC U12T1S					:TU, 18:00    <--Special practice
