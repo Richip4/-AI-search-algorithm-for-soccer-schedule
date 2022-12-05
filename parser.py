@@ -105,19 +105,19 @@ def parser():
 
     inputFile.close()
 
-    '''
-    print("games slot:", gameSlots)
-    print("practice slot:", practiceSlots)
-    for i in range(len(games)):
-        print("game", i, ":", games[i])
-    for i in range(len(practices)):
-        print("practice", i, ":", practices[i])
-    print("not compatible:", notCompatible)
-    print("unwanted:", unwanted)
-    print("preferences:", preferences)
-    print("pair:", pair)
-    print("partial assignments:", partialAssignments)
-    '''
+    
+    # print("games slot:", gameSlots)
+    # print("practice slot:", practiceSlots)
+    # for i in range(len(games)):
+    #     print("game", i, ":", games[i])
+    # for i in range(len(practices)):
+    #     print("practice", i, ":", practices[i])
+    # print("not compatible:", notCompatible)
+    # print("unwanted:", unwanted)
+    # print("preferences:", preferences)
+    # print("pair:", pair)
+    # print("partial assignments:", partialAssignments)
+    
     return gameSlots, practiceSlots, games, practices, notCompatible, unwanted, preferences, pair, partialAssignments
 
-# parser()
+#parser()

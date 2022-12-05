@@ -62,7 +62,7 @@ def is_complete_schedule(node):
 
     return True
 
-def is_practice(str):
+def is_practice(str): # should take a game and return isPractice boolean from object
     if "PRC" in str or "OPN" in str:
         return True
     return False
