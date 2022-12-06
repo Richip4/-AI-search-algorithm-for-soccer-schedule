@@ -104,6 +104,7 @@ def check_hard_constraints(node, notCompatible, unwanted, eveningGameSlots, even
                         if (g_session.league == p_session.league) and ((p_session.division == 0) or
                                                                        (g_session.division == p_session.division)):
                             return False
+    return True
 
     # not partassign (dont need to check this since all partassign are assigned at the start) ignore
 
