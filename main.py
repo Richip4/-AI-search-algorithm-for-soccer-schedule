@@ -116,12 +116,18 @@ prac_sch = {aPractice:[aPSession1, aPSession2]}  # Placeholder
 
 #game_sch and prac_sch as 'placeholders' for game_schedule and practice_schedule dictionaries
 print("Eval-value: ")
-for slot, sList in game_sch.items():
+for slot, sList in gameSchedule.items():
+    if(slot.time >= 1000):
+        time = str(slot.time)
+        time = time[:2] + ":" + time[2:]
+    else:
+        time = str(slot.time)
+        time = time[:1] + ":" + time[1:]
     for session in sList:
-        print('{:<30s} {:<10s}'.format(session.fullname, ":" + slot.day + ", " + slot.time))
+        print('{:<30s} {:<10s}'.format(session.fullname, ":" + slot.day + ", " + time))
 
-for slot, sList in prac_sch.items():
+for slot, sList in practiceSchedule.items():
     for session in sList:
-        print('{:<30s} {:<10s}'.format(session.fullname, ":" + slot.day + ", " + slot.time))
+        print('{:<30s} {:<10s}'.format(session.fullname, ":" + slot.day + ", " + time))
 
 
