@@ -130,46 +130,66 @@ def overlapping(game_slot, practice_slot):
         return False
 
 
-def check_soft_constraints(node, pref, penGameMin, penPracticeMin, w_pref, penSecdiff, w_secdiff):
+def check_soft_constraints(node, pref, penGameMin, penPracticeMin, pairs, penNotPair, penSecdiff):
+    # min penalty
     gameSchedule = node.game_schedule
-    eval = 0
+    min_eval = 0
     for i in list(gameSchedule.keys()):
         if (len(gameSchedule[i]) < i.sessionMin):
             diff = i.sessionMin - len(gameSchedule[i])
             pen = diff * penGameMin
-            eval = eval + pen
+            min_eval = min_eval + pen
 
     practiceSchedule = node.practice_schedule
     for i in list(practiceSchedule.keys()):
         if (len(practiceSchedule[i]) < i.sessionMin):
             diff = i.sessionMin - len(practiceSchedule[i])
             pen = diff * penGameMin
-            eval = eval + pen
+            min_eval = min_eval + pen
 
+    pref_eval = 0
     # pref soft constraint
     for slot in node.game_schedule:
         for session in node.game_schedule[slot]:
             for pref_slot in pref:
                 if session.fullname in pref_slot:
                     if slot.day + " " + slot.time != pref_slot[1]:
-                        eval = eval + int(pref_slot[2])
-
+                        pref_eval = pref_eval + int(pref_slot[2])
 
     for slot in node.practice_schedule:
         for session in node.practice_schedule[slot]:
             for pref_slot in pref:
                 if session.fullname in pref_slot:
                     if slot.day + " " + slot.time != pref_slot[1]:
-                        eval = eval + (int(pref_slot[2]) * w_pref)
+                        pref_eval = pref_eval + int(pref_slot[2])
 
-    #secdiff soft constraint
+    # pair penalty
+    gameSchedule = node.game_schedule
+    isIn = False
+    pair_eval = 0
+    for i in list(gameSchedule.keys()):
+        for a in gameSchedule[i]:
+            for b in pairs:
+                if (a in b):
+                    for c in node.practice_schedule[i]:
+                        if (c != a and c in b):
+                            isIn = True
+
+                if (isIn == False):
+                    pair_eval = pair_eval + penNotPair
+
+                isIn = False
+
+
+    # secdiff soft constraint
+    secdiff_eval = 0
     for slot in node.game_schedule:
         for session in node.game_schedule[slot]:
             for session2 in node.game_schedule[slot]:
                 if (session.fullname == session2.fullname) and (session.division != session2.division):
-                    eval = eval + (penSecdiff * w_secdiff)
+                    secdiff_eval = secdiff_eval + penSecdiff
 
-
+    eval = min_eval + pref_eval + pair_eval + secdiff_eval
     return eval
 
 
