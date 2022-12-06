@@ -186,7 +186,7 @@ def check_soft_constraints(node, pref, penGameMin, penPracticeMin, pairs, penNot
     for slot in node.game_schedule:
         for session in node.game_schedule[slot]:
             for session2 in node.game_schedule[slot]:
-                if (session.fullname == session2.fullname) and (session.division != session2.division):
+                if (session.league == session2.league) and (session.division != session2.division):
                     secdiff_eval = secdiff_eval + penSecdiff
 
     eval = min_eval + pref_eval + pair_eval + secdiff_eval
