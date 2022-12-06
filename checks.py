@@ -131,7 +131,7 @@ def overlapping(game_slot, practice_slot):
         return False
 
 
-def check_soft_constraints(node, pref, penGameMin, penPracticeMin, pairs, penNotPair, penSecdiff):
+def check_soft_constraints(node, pref, penGameMin, penPracticeMin, pairs, penNotPair, penSecdiff, wMinFill, wPref, wPair, wSecDiff):
     # min penalty
     gameSchedule = node.game_schedule
     min_eval = 0
@@ -145,7 +145,7 @@ def check_soft_constraints(node, pref, penGameMin, penPracticeMin, pairs, penNot
     for i in list(practiceSchedule.keys()):
         if (len(practiceSchedule[i]) < i.sessionMin):
             diff = i.sessionMin - len(practiceSchedule[i])
-            pen = diff * penGameMin
+            pen = diff * penPracticeMin
             min_eval = min_eval + pen
 
     pref_eval = 0
@@ -190,7 +190,7 @@ def check_soft_constraints(node, pref, penGameMin, penPracticeMin, pairs, penNot
                 if (session.league == session2.league) and (session.division != session2.division):
                     secdiff_eval = secdiff_eval + penSecdiff
 
-    eval = min_eval + pref_eval + pair_eval + secdiff_eval
+    eval = min_eval*wMinFill + pref_eval*wPref + pair_eval*wPair + secdiff_eval*wSecDiff
     return eval
 
 
