@@ -1,14 +1,11 @@
 class Node:
-    game_schedule = {}
-    practice_schedule = {}
-    children = []
-    parent = None
-    solved = False
 
-    def __init__(self, games, practices, parent):
+    def __init__(self, games, practices, parent, children):
         self.game_schedule = games
         self.practice_schedule = practices
         self.parent = parent
+        self.children = children
+        self.solved = False
 
 class Tree:
     root = None
@@ -18,17 +15,15 @@ class Tree:
         self.root = root
 
 class Session:
-    league = ""         # example: CSMA U17T1
-    division = 0        # example: 1
-    is_practice = False
 
-    def __init__(self, l, d, p):
+    def __init__(self, l, d, p, fn):
         self.league = l
         self.division = d
         self.is_practice = p
+        self.fullname = fn
 
     def __str__(self):
-        return "league: " + str(self.league) + ", division: " + str(self.division) + ", practice?: " + str(self.is_practice)
+        return "league: " + str(self.league) + ", division: " + str(self.division) + ", practice?: " + str(self.is_practice) + ", fullname: " + self.fullname
 
 class Slot:
 

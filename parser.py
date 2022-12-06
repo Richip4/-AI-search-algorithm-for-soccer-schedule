@@ -47,18 +47,18 @@ def parser():
             i = i + 1
             while lines[i] != "\n":
                 lines[i] = lines[i].replace("\n", "")
+                fullname = lines[i]
                 splited = lines[i].split(" ")
-                print(splited[0] + " " + splited[1])
-                games.append(Session(splited[0] + " " + splited[1], int(splited[3]), False))
+                games.append(Session(splited[0] + " " + splited[1], int(splited[3]), False, fullname))
                 i = i + 1
 
         if "practices" in lines[i].lower():
             i = i + 1
             while lines[i] != "\n":
                 lines[i] = lines[i].replace("\n", "")
+                fullname = lines[i]
                 splited = lines[i].split(" ")
-                print(splited[0] + " " + splited[1])
-                practices.append(Session(splited[0] + " " + splited[1], int(splited[3]), True))
+                practices.append(Session(splited[0] + " " + splited[1], int(splited[3]), True, fullname))
                 i = i + 1
 
         if "not compatible" in lines[i].lower():
@@ -123,24 +123,24 @@ def parser():
 # uncomment following AND "parser()" to print parsing output
 # gameSlots, practiceSlots, eveningGameSlots, and eveningPracticeSlots are Slot objects
 # games and practices are Session objects
-    # for i in range(len(gameSlots)):
-    #     print("game slot", i, ":", gameSlots[i])
-    # for i in range(len(practiceSlots)):
-    #     print("prac slot", i, ":", practiceSlots[i])
-    # for i in range(len(games)):
-    #     print("game", i, ":", games[i])
-    # for i in range(len(practices)):
-    #     print("practice", i, ":", practices[i])
-    # print("not compatible:", notCompatible)
-    # print("unwanted:", unwanted)
-    # print("preferences:", preferences)
-    # print("pair:", pair)
-    # print("partial assignments:", partialAssignments)
-    # for i in range(len(eveningGameSlots)):
-    #     print("evening game slot", i, ":", eveningGameSlots[i])
-    # for i in range(len(eveningPracticeSlots)):
-    #     print("evening prac slot", i, ":", eveningPracticeSlots[i])
+    for i in range(len(gameSlots)):
+        print("game slot", i, ":", gameSlots[i])
+    for i in range(len(practiceSlots)):
+        print("prac slot", i, ":", practiceSlots[i])
+    for i in range(len(games)):
+        print("game", i, ":", games[i])
+    for i in range(len(practices)):
+        print("practice", i, ":", practices[i])
+    print("not compatible:", notCompatible)
+    print("unwanted:", unwanted)
+    print("preferences:", preferences)
+    print("pair:", pair)
+    print("partial assignments:", partialAssignments)
+    for i in range(len(eveningGameSlots)):
+        print("evening game slot", i, ":", eveningGameSlots[i])
+    for i in range(len(eveningPracticeSlots)):
+        print("evening prac slot", i, ":", eveningPracticeSlots[i])
     
     return gameSlots, practiceSlots, games, practices, notCompatible, unwanted, preferences, pair, partialAssignments, eveningGameSlots, eveningPracticeSlots
 
-# parser()
+parser()
