@@ -15,10 +15,6 @@ class Tree:
         self.root = root
 
 class Session:
-    league = ""         # example: CSMA U17T1
-    division = 0        # example: 1
-    is_practice = False
-
     def __init__(self, l, d, p):
         self.league = l
         self.division = d
