@@ -156,6 +156,6 @@ def parser():
         print("evening prac slot", i, ":", eveningPracticeSlots[i])
 
 
-    return gameSlots, practiceSlots, games, practices, notCompatible, unwanted, preferences, pair, partialAssignments, eveningGameSlots, eveningPracticeSlots
+    return [gameSlots, practiceSlots, games, practices, notCompatible, unwanted, preferences, pair, partialAssignments, eveningGameSlots, eveningPracticeSlots]
 
-parser()
+#parser()

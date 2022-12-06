@@ -108,18 +108,18 @@ partial assignments: [['CUSA O18 DIV 01', 'MO 8:00'], ['CUSA O18 DIV 01 PRC 01',
 # print(node3)
 # print(node2)
 # print(leafNodes)
-slot = aTree.Slot("MON", 1900, 3, 1, False)
-slot2 = aTree.Slot("TUE", 200, 3, 1, False)
-ses1 = aTree.Session("jkl", 9, True)
-ses2 = aTree.Session("lkm", 10, True)
-ps = {slot: [], slot2: []}
-#games = [ses1, ses2]
-leafNode = aTree.Node(None, ps, None, [])
+# slot = aTree.Slot("MON", 1900, 3, 1, False)
+# slot2 = aTree.Slot("TUE", 200, 3, 1, False)
+# ses1 = aTree.Session("jkl", 9, True)
+# ses2 = aTree.Session("lkm", 10, True)
+# ps = {slot: [], slot2: []}
+# #games = [ses1, ses2]
+# leafNode = aTree.Node(None, ps, None, [])
 
-evGs = []
-evPs = [slot]
-games = []
-practices = [ses1, ses2]
-doEveningSlots(leafNode, evGs, evPs, games, practices)
-print(ses1.division)
-print(leafNode.children)
+# evGs = []
+# evPs = [slot]
+# games = []
+# practices = [ses1, ses2]
+# doEveningSlots(leafNode, evGs, evPs, games, practices)
+# print(ses1.division)
+# print(leafNode.children)
