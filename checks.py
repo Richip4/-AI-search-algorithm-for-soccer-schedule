@@ -146,6 +146,7 @@ def check_soft_constraints(node, pref, penGameMin, penPracticeMin, w_pref, penSe
             pen = diff * penGameMin
             eval = eval + pen
 
+    # pref soft constraint
     for slot in node.game_schedule:
         for session in node.game_schedule[slot]:
             for pref_slot in pref:
@@ -153,7 +154,7 @@ def check_soft_constraints(node, pref, penGameMin, penPracticeMin, w_pref, penSe
                     if slot.day + " " + slot.time != pref_slot[1]:
                         eval = eval + int(pref_slot[2])
 
-    #pref soft constraint
+
     for slot in node.practice_schedule:
         for session in node.practice_schedule[slot]:
             for pref_slot in pref:
@@ -165,7 +166,7 @@ def check_soft_constraints(node, pref, penGameMin, penPracticeMin, w_pref, penSe
     for slot in node.game_schedule:
         for session in node.game_schedule[slot]:
             for session2 in node.game_schedule[slot]:
-                if (session.fullname == session2.fullname) and (session.division != session2.division)
+                if (session.fullname == session2.fullname) and (session.division != session2.division):
                     eval = eval + (penSecdiff * w_secdiff)
 
 
