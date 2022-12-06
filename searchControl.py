@@ -51,22 +51,22 @@ def div(aLeafNode, games, practices):
 			newSchedule = gameSchedule.copy()
 			newSchedule[key].append(i)
 		newNode = aTree.Node(newSchedule, aLeafNode.practices, aLeafNode,               [])
-		if(check.check_hard_constraints(newNode, check.notCompatible, check.unwanted)
+		if(check.check_hard_constraints(newNode, check.notCompatible, check.unwanted)):
 			aLeafNode.children.append(newNode)
 
 	practiceSchedule = aLeafNode.practice_schedule.copy()
-	thePractice = practice.copy()
+	thePractice = check.practice.copy()
 	for i in list(practiceSchedule.keys()):
 		if(practiceSchedule[i]):
 			for a in practiceSchedule[i]:
-				thePractices.remove(a)
+				check.thePractices.remove(a)
 
 	for i in thePractice:
-		for key in list(PracticeSchedule.keys()):
+		for key in list(check.PracticeSchedule.keys()):
 			newSchedule = practiceSchedule.copy()
 			newSchedule[key].append(i)
 		newNode = aTree.Node(gameSchedule, practiceSchedule, aLeafNode,               [])
-		if(check_hard_constraints(newNode, notCompatible, unwanted)
+		if(check.check_hard_constraints(newNode, check.notCompatible, check.unwanted)):
 			aLeafNode.children.append(newNode)
 '''
 games slot: [['MO 8:00', '3', '2'], ['MO 9:00', '3', '2'], ['TU 9:30', '2', '1']]
