@@ -102,15 +102,15 @@ sC.doEveningSlots(root, input[9], input[10], input[2], input[3])
 
 #Printing output-----------------------
 
-aGame = Slot('MO', '8:00', 2, 0, False)
-aGSession = Session("CSMA U13T3", 99, False, "CSMA U13T3 DIV 99")
+# aGame = Slot('MO', '8:00', 2, 0, False)
+# aGSession = Session("CSMA U13T3", 99, False, "CSMA U13T3 DIV 99")
 
-aPractice = Slot('MO', '8:00', 2, 0, True)
-aPSession1 = Session('CSMA U13T3', 1, True, "CSMA U13T3 DIV 99 OPN 01")
-aPSession2 = Session('CSSC O19T1', 1, True, "CSSC O19T1 DIV 01 PRC 01")
+# aPractice = Slot('MO', '8:00', 2, 0, True)
+# aPSession1 = Session('CSMA U13T3', 1, True, "CSMA U13T3 DIV 99 OPN 01")
+# aPSession2 = Session('CSSC O19T1', 1, True, "CSSC O19T1 DIV 01 PRC 01")
 
-game_sch = {aGame:[aGSession]}  # Placeholder
-prac_sch = {aPractice:[aPSession1, aPSession2]}  # Placeholder
+# game_sch = {aGame:[aGSession]}  # Placeholder
+# prac_sch = {aPractice:[aPSession1, aPSession2]}  # Placeholder
 #game_sch = {aGame:['CSMA U13T3 DIV 01'], 'MO, 9:00':['CSMA U17T1 DIV 01'], 'TO, 9:30':[]}
 #prac_sch = {'MO, 8:00':['CSMA U13T3 DIV 02 OPN 02','CSMA U17T1 PRC 01'], 'TU, 10:00':['CSSC O19T1 DIV 95 PRC 99'], 'FR, 10:00':['CUSA O18 DIV 01 PRC 01']}
 
