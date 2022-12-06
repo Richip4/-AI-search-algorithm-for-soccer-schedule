@@ -193,21 +193,27 @@ def check_soft_constraints(node, pref, penGameMin, penPracticeMin, pairs, penNot
     return eval
 
 
-def is_complete_schedule(node):
+def is_complete_schedule(node, games, practices):
     for game in games:
         is_in_some_slot = False
-        for slot in node.schedule:
-            if node.schedule[slot] == game:
-                is_in_some_slot = True  # check off this game
+        for slot in node.game_schedule:
+            for session in node.game_schedule[slot]:
+                if session.fullname == game.fullname:
+                    is_in_some_slot = True  # check off this game
+                    break
+            if is_in_some_slot:
                 break
         if not is_in_some_slot:
             return False
 
     for practice in practices:
         is_in_some_slot = False
-        for slot in node.schedule:
-            if node.schedule[slot] == practice:
-                is_in_some_slot = True  # check off this game
+        for slot in node.practice_schedule:
+            for session in node.practice_schedule[slot]:
+                if session.fullname == practice.fullname:
+                    is_in_some_slot = True  # check off this game
+                    break
+            if is_in_some_slot:
                 break
         if not is_in_some_slot:
             return False
