@@ -1,3 +1,6 @@
+from and_tree import Session, Slot
+
+
 def parser():
     gameSlots = []
     practiceSlots = []
@@ -8,6 +11,8 @@ def parser():
     preferences = []
     pair = []
     partialAssignments = []
+    eveningGameSlots = []
+    eveningPracticeSlots = []
 
     inputFile = open("input.txt", "r")
     lines = inputFile.readlines()
@@ -20,8 +25,10 @@ def parser():
                 lines[i] = lines[i].replace(" ", "")
                 lines[i] = lines[i].replace("\n", "")
                 lines[i] = lines[i].replace(",", " ", 1)
+                lines[i] = lines[i].replace(" ", ",")
+                lines[i] = lines[i].replace(":", "")
                 splited = lines[i].split(",")
-                gameSlots.append(splited)
+                gameSlots.append(Slot(splited[0], int(splited[1]), int(splited[2]), int(splited[3]), False))
                 i = i + 1
 
         if "practice slots" in lines[i].lower():
@@ -30,20 +37,28 @@ def parser():
                 lines[i] = lines[i].replace(" ", "")
                 lines[i] = lines[i].replace("\n", "")
                 lines[i] = lines[i].replace(",", " ", 1)
+                lines[i] = lines[i].replace(" ", ",")
+                lines[i] = lines[i].replace(":", "")
                 splited = lines[i].split(",")
-                practiceSlots.append(splited)
+                practiceSlots.append(Slot(splited[0], int(splited[1]), int(splited[2]), int(splited[3]), True))
                 i = i + 1
 
         if "games" in lines[i].lower():
             i = i + 1
             while lines[i] != "\n":
-                games.append(lines[i].replace("\n", ""))
+                lines[i] = lines[i].replace("\n", "")
+                splited = lines[i].split(" ")
+                print(splited[0] + " " + splited[1])
+                games.append(Session(splited[0] + " " + splited[1], int(splited[3]), False))
                 i = i + 1
 
         if "practices" in lines[i].lower():
             i = i + 1
             while lines[i] != "\n":
-                practices.append(lines[i].replace("\n", ""))
+                lines[i] = lines[i].replace("\n", "")
+                splited = lines[i].split(" ")
+                print(splited[0] + " " + splited[1])
+                practices.append(Session(splited[0] + " " + splited[1], int(splited[3]), True))
                 i = i + 1
 
         if "not compatible" in lines[i].lower():
@@ -58,7 +73,8 @@ def parser():
             i = i + 1
             while lines[i] != "\n":
                 lines[i] = lines[i].replace("\n", "")
-                splited = lines[i].split(", ")
+                splited = lines[i].split(", ", 1)
+                splited[1] = splited[1].replace(", ", " ")
                 unwanted.append(splited)
                 i = i + 1
 
@@ -80,25 +96,51 @@ def parser():
                 i = i + 1
 
         if "partial assignments" in lines[i].lower():
-            i = i + 1
+            # i = i + 1
             while lines[i] != "\n":
+                i = i + 1
+                if i == len(lines):
+                    break
                 lines[i] = lines[i].replace("\n", "")
                 splited = lines[i].split(", ", 1)
                 splited[1] = splited[1].replace(", ", " ")
                 partialAssignments.append(splited)
-                i = i + 1
-                if i == len(lines):
-                    break
+                # i = i + 1
+                # if i == len(lines):
+                #    break
 
     inputFile.close()
-    '''
-    print("games slot:", gameSlots)
-    print("practice slot:", practiceSlots)
-    print("games:", games)
-    print("practices:", practices)
-    print("not compatible:", notCompatible)
-    print("unwanted:", unwanted)
-    print("preferences:", preferences)
-    print("pair:", pair)
-    print("partial assignments:", partialAssignments)'''
-    return gameSlots, practiceSlots, games, practices, notCompatible, unwanted, preferences, pair, partialAssignments
+
+    # creates subarray of gameSlot and practiceSlot that are evening slots
+    for i in range(len(gameSlots)):
+        if gameSlots[i].time >= 1800:
+            eveningGameSlots.append(gameSlots[i])
+
+    for i in range(len(practiceSlots)):
+        if practiceSlots[i].time >= 1800:
+            eveningPracticeSlots.append(practiceSlots[i])
+
+# uncomment following AND "parser()" to print parsing output
+# gameSlots, practiceSlots, eveningGameSlots, and eveningPracticeSlots are Slot objects
+# games and practices are Session objects
+    # for i in range(len(gameSlots)):
+    #     print("game slot", i, ":", gameSlots[i])
+    # for i in range(len(practiceSlots)):
+    #     print("prac slot", i, ":", practiceSlots[i])
+    # for i in range(len(games)):
+    #     print("game", i, ":", games[i])
+    # for i in range(len(practices)):
+    #     print("practice", i, ":", practices[i])
+    # print("not compatible:", notCompatible)
+    # print("unwanted:", unwanted)
+    # print("preferences:", preferences)
+    # print("pair:", pair)
+    # print("partial assignments:", partialAssignments)
+    # for i in range(len(eveningGameSlots)):
+    #     print("evening game slot", i, ":", eveningGameSlots[i])
+    # for i in range(len(eveningPracticeSlots)):
+    #     print("evening prac slot", i, ":", eveningPracticeSlots[i])
+    
+    return gameSlots, practiceSlots, games, practices, notCompatible, unwanted, preferences, pair, partialAssignments, eveningGameSlots, eveningPracticeSlots
+
+# parser()
