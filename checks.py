@@ -65,38 +65,18 @@ def check_hard_constraints(node, notCompatible, unwanted, eveningGameSlots, even
             if session.division >= 9 and not (slot in eveningPracticeSlots):
                 return False
 
-# todo need practice number
             # check if unwanted game is set
             for not_wanted in unwanted:
-                if session.division == 0:
-                    if ((session.league + " " + session.p^ractice) in not_wanted[0]) and (
-                            not_wanted[1].replace(":", "") == slot.day + " " + slot.time):
-                        return False
-                if ((session.league + " DIV " + session.division + " " + session.p^ractice) in not_wanted[0]) and (
+                if (session.fullname == not_wanted[0]) and (
                         not_wanted[1].replace(":", "") == slot.day + " " + slot.time):
                     return False
 
             for bad_pair in notCompatible:
-                if session.division == 0:
-                    if (session.league + " " + session.p^ractice) in bad_pair[0]:
-                        for session2 in node.game_schedule[slot]:
-                            if session2.division == 0:
-                                if (session2.league + " " + session.p^ractice) in bad_pair[1]:
-                                    return False
-                            else:
-                                if (session.league + " DIV " + session.division + " " + session.p^ractice) in bad_pair[1]:
-                                    return False
-                else:
-                    if (session.league + " DIV " + session.division + " " + session.p^ractice) in bad_pair[0]:
-                        for session2 in node.game_schedule[slot]:
-                            if session2.division == 0:
-                                if (session2.league + " " + session.p^ractice) in bad_pair[1]:
-                                    return False
-                            else:
-                                if (session2.league + " DIV" + session2.division) in bad_pair[1]:
-                                    return False
+                if session.fullname == bad_pair[0]:
+                    for session2 in node.game_schedule[slot]:
+                        if session2.fullname == bad_pair[1]:
+                            return False
 
-# done
     #   u12t1s cannot overlap u12t1,
     #   u13t1s """""""""""""" u13t1
         for session in node.practice_schedule[slot]:
