@@ -3,20 +3,27 @@ import and_tree as aT
 import checks as checks
 import searchControl as sC
 
-def a_tree(node):
-    # if all children are solved then solve yourself & move up
-    if not checks.check_hard_constraints(node, notCompatible):
-        node.solved = True
-        node = node.parent
-    elif checks.is_complete_schedule(node):
-        check_save(node)
-        node.solved = True
-        node = node.parent
-    else:
-        #div(node)
-        for child in node.children:
-            if not child.solved:
-                a_tree(node)
+def a_tree(node, games, practices):
+    notSolved = False
+
+    while(notSolved == False):
+        chosenLeaf = sC.fLeaf(node)
+        sC.div(chosenLeaf, games, practices)
+        #check solved
+    
+    # # if all children are solved then solve yourself & move up
+    # if not checks.check_hard_constraints(node, notCompatible):
+    #     node.solved = True
+    #     node = node.parent
+    # elif checks.is_complete_schedule(node):
+    #     check_save(node)
+    #     node.solved = True
+    #     node = node.parent
+    # else:
+    #     #div(node)
+    #     for child in node.children:
+    #         if not child.solved:
+    #             a_tree(node)
 
 
 best_score = 9999999
@@ -90,3 +97,5 @@ for partAssign in input[8]:
 
 root = aT.Node(gameSchedule, practiceSchedule, None, [])
 andTree = aT.Tree(root)
+
+sC.doEveningSlots(root, input[9], input[10], input[2], input[3])
