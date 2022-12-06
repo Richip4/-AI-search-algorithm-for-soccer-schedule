@@ -1,9 +1,4 @@
 class Node:
-    # game_schedule = {}
-    # practice_schedule = {}
-    # children = []
-    # parent = None
-    # solved = False
 
     def __init__(self, games, practices, parent, children):
         self.game_schedule = games
@@ -30,13 +25,16 @@ class Session:
         self.is_practice = p
 
     def __str__(self):
-        return str(self.league) + " " + str(self.division) + " " + str(self.is_practice)
+        return "league: " + str(self.league) + ", division: " + str(self.division) + ", practice?: " + str(self.is_practice)
 
+class Slot:
 
-node1 = Node(None, None, None)
-node1.children.append(5)
-node2 = Node(None, None, None)
-node2.children.append(10)
+    def __init__(self, d, t, mx, mn, prac):
+        self.day = d
+        self.time = t
+        self.sessionMax = mx
+        self.sessionMin = mn
+        self.isPractice = prac
 
-print(node1 == node2)
-print(node2.children)
+    def __str__(self):
+        return self.day + ", time: " + str(self.time) + ", max: " + str(self.sessionMax) + ", min: " + str(self.sessionMin) + ", practice? = " + str(self.isPractice)
