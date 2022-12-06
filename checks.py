@@ -14,10 +14,11 @@ def check_hard_constraints(node, notCompatible, unwanted, eveningGameSlots, even
             if len(node.game_schedule[slot]) > 0:
                 return False
 
-        over_u15 = 0 # checks games in u15+ that are overlapping
+        over_u15 = 0  # checks games in u15+ that are overlapping
         for session in node.game_schedule[slot]:
             # u15+ games can't overlap
-            if ("U15" in session.league) or ("U16" in session.league) or ("U17" in session.league) or ("U19" in session.league):
+            if ("U15" in session.league) or ("U16" in session.league) or ("U17" in session.league) or (
+                    "U19" in session.league):
                 over_u15 = over_u15 + 1
                 if over_u15 > 1:
                     return False
@@ -39,7 +40,7 @@ def check_hard_constraints(node, notCompatible, unwanted, eveningGameSlots, even
                         if (session2.league + " DIV" + session2.division) in bad_pair[1]:
                             return False
 
-# practices below
+    # practices below
     # for when special t1s practices are requested
     # if there is a booking for u12t1 or u13t1:
     u13t1s_requested = False
@@ -77,18 +78,18 @@ def check_hard_constraints(node, notCompatible, unwanted, eveningGameSlots, even
                         if session2.fullname == bad_pair[1]:
                             return False
 
-    #   u12t1s cannot overlap u12t1,
-    #   u13t1s """""""""""""" u13t1
+        #   u12t1s cannot overlap u12t1,
+        #   u13t1s """""""""""""" u13t1
         for session in node.practice_schedule[slot]:
             for session2 in node.practice_schedule[slot]:
                 if (session.league == session2.league) and (session.division == session2.division):
                     return False
                 # check if t1 in session then check other sessions to see if duplicate, then go to next session
-                if ("U13T1 " in (session.league + " ")) and ("U13T1S " in (session2.league + " ")) or\
+                if ("U13T1 " in (session.league + " ")) and ("U13T1S " in (session2.league + " ")) or \
                         ("U12T1 " in (session.league + " ")) and ("U12T1S " in (session2.league + " ")):
                     return False
 
-    #over lapping part
+    # over lapping part
     for g_slot in node.game_schedule:
         for p_slot in node.practice_schedule:
             if overlapping(g_slot, p_slot):
@@ -108,7 +109,6 @@ def check_hard_constraints(node, notCompatible, unwanted, eveningGameSlots, even
 
 
 def overlapping(game_slot, practice_slot):
-
     if (game_slot.day == "MO") and (practice_slot == "FR") and ((game_slot.time == practice_slot.time) or (
             game_slot.time == practice_slot.time + 100)):
         return True
@@ -129,8 +129,38 @@ def overlapping(game_slot, practice_slot):
     else:
         return False
 
-def check_soft_constraints(node):
-    pass
+
+def check_soft_constraints(node, pref, penGameMin, penPracticeMin):
+    gameSchedule = node.game_schedule
+    eval = 0
+    for i in list(gameSchedule.keys()):
+        if (len(gameSchedule[i]) < i.sessionMin):
+            diff = i.sessionMin - len(gameSchedule[i])
+            pen = diff * penGameMin
+            eval = eval + pen
+
+    practiceSchedule = node.practice_schedule
+    for i in list(practiceSchedule.keys()):
+        if (len(practiceSchedule[i]) < i.sessionMin):
+            diff = i.sessionMin - len(practiceSchedule[i])
+            pen = diff * penGameMin
+            eval = eval + pen
+
+    for slot in node.game_schedule:
+        for session in node.game_schedule[slot]:
+            for pref_slot in pref:
+                if session.fullname in pref_slot:
+                    if slot.day + " " + slot.time != pref_slot[1]:
+                        eval = eval + int(pref_slot[2])
+
+    for slot in node.practice_schedule:
+        for session in node.practice_schedule[slot]:
+            for pref_slot in pref:
+                if session.fullname in pref_slot:
+                    if slot.day + " " + slot.time != pref_slot[1]:
+                        eval = eval + int(pref_slot[2])
+
+    return eval
 
 
 def is_complete_schedule(node):
