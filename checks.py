@@ -29,15 +29,15 @@ def check_hard_constraints(node, notCompatible, unwanted, eveningGameSlots, even
 
             # check if unwanted game is set
             for not_wanted in unwanted:
-                if ((session.league + " DIV " + session.division) in not_wanted[0]) and (
+                if ((session.league + " DIV " + str(session.division)) in not_wanted[0]) and (
                         not_wanted[1].replace(":", "") == slot.day + " " + slot.time):
                     return False
 
             # check not compatible games are set to each other
             for bad_pair in notCompatible:
-                if (session.league + " DIV " + session.division) in bad_pair[0]:
+                if (session.league + " DIV " + str(session.division)) in bad_pair[0]:
                     for session2 in node.game_schedule[slot]:
-                        if (session2.league + " DIV" + session2.division) in bad_pair[1]:
+                        if (session2.league + " DIV" + str(session2.division)) in bad_pair[1]:
                             return False
 
     # practices below
