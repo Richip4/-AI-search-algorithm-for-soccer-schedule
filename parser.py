@@ -1,7 +1,18 @@
 from and_tree import Session, Slot
-
+import sys
 
 def parser():
+
+    fileName = sys.argv[1]
+    wminfilled = sys.argv[2]
+    wpref = sys.argv[3]
+    wpair = sys.argv[4]
+    wsecdiff = sys.argv[5]
+    penGameMin = sys.argv[6]
+    penPracticeMin = sys.argv[7]
+    penNotPaired = sys.argv[8]
+    penSection = sys.argv[9]
+
     gameSlots = []
     practiceSlots = []
     games = []
@@ -14,7 +25,7 @@ def parser():
     eveningGameSlots = []
     eveningPracticeSlots = []
 
-    inputFile = open("input.txt", "r")
+    inputFile = open(fileName, "r")
     lines = inputFile.readlines()
 
     for i in range(0, len(lines)):
@@ -48,7 +59,9 @@ def parser():
             while lines[i] != "\n":
                 lines[i] = lines[i].replace("\n", "")
                 fullname = lines[i]
+                print(lines[i])
                 splited = lines[i].split(" ")
+                print(splited[3])
                 games.append(Session(splited[0] + " " + splited[1], int(splited[3]), False, fullname))
                 i = i + 1
 
@@ -123,6 +136,7 @@ def parser():
 # uncomment following AND "parser()" to print parsing output
 # gameSlots, practiceSlots, eveningGameSlots, and eveningPracticeSlots are Slot objects
 # games and practices are Session objects
+
     for i in range(len(gameSlots)):
         print("game slot", i, ":", gameSlots[i])
     for i in range(len(practiceSlots)):
@@ -140,7 +154,8 @@ def parser():
         print("evening game slot", i, ":", eveningGameSlots[i])
     for i in range(len(eveningPracticeSlots)):
         print("evening prac slot", i, ":", eveningPracticeSlots[i])
-    
-    return gameSlots, practiceSlots, games, practices, notCompatible, unwanted, preferences, pair, partialAssignments, eveningGameSlots, eveningPracticeSlots
 
-parser()
+
+    return [gameSlots, practiceSlots, games, practices, notCompatible, unwanted, preferences, pair, partialAssignments, eveningGameSlots, eveningPracticeSlots]
+
+#parser()
