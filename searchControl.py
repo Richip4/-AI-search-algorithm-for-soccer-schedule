@@ -2,19 +2,20 @@
 import and_tree as aTree
 import checks as check
 import random
+from main import input
 
 
 #Will choose which leaf to try and expand (current idea is to randomly choose leaf)
-def fLeaf(aTree):
+def fLeaf(aRoot):
     #find all the leaf nodes
     visited = set()
     leafNodes = set()
-    findLeafNodes(visited, leafNodes, aTree.root)
+    findLeafNodes(visited, leafNodes, aRoot)
     
     #randomly generate a number within the bounds of the leaf node list and choose that leaf node
     childrenSize = len(leafNodes)
     leafIndex = random.randint(0,childrenSize-1)
-    chosenLeaf = leafNodes[leafIndex]
+    chosenLeaf = list(leafNodes)[leafIndex]
 
     return chosenLeaf 
 
@@ -35,18 +36,23 @@ def div(aLeafNode, games, practices):
     for i in list(gameSchedule.keys()):
         if(gameSchedule[i]):
             for a in gameSchedule[i]:
-                theGames.remove(a)
+                # print("games list ", games)
+                # print("theGames list ", theGames)
+                # print("Game ", a)
+                for b in theGames:
+                    if(a.fullname == b.fullname):
+                        theGames.remove(b)
              
     for i in theGames:
         for key in list(gameSchedule.keys()):
             newSchedule = gameSchedule.copy()
             newSchedule[key].append(i)
-            newNode = aTree.Node(newSchedule, aLeafNode.practices, aLeafNode, [])
-            if(check.check_hard_constraints(newNode, check.notCompatible, check.unwanted)):
+            newNode = aTree.Node(newSchedule, aLeafNode.practice_schedule, aLeafNode, [])
+            if(check.check_hard_constraints(newNode, input[4], input[5])):
                 aLeafNode.children.append(newNode)
 
     practiceSchedule = aLeafNode.practice_schedule.copy()
-    thePractice = check.practice.copy()
+    thePractice = check.practices.copy()
     for i in list(practiceSchedule.keys()):
         if(practiceSchedule[i]):
             for a in practiceSchedule[i]:
@@ -57,7 +63,7 @@ def div(aLeafNode, games, practices):
                 newSchedule = practiceSchedule.copy()
                 newSchedule[key].append(i)
                 newNode = aTree.Node(gameSchedule, practiceSchedule, aLeafNode, [])
-                if(check.check_hard_constraints(newNode, check.notCompatible, check.unwanted)):
+                if(check.check_hard_constraints(newNode, input[4], input[5])):
                     aLeafNode.children.append(newNode)
 
 
