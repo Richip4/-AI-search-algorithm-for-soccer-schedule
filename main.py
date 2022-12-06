@@ -83,10 +83,15 @@ for i in input[1]:
 #             initial_game_input[part_assign[1]] = [ part_assign[0] ]
 
 for partAssign in input[8]:
-    if partAssign[0].isPractice:
-        practiceSchedule[partAssign[1]].append(partAssign[0])
+    if partAssign[0].is_practice:
+        for slot in list(practiceSchedule.keys()):
+            if (slot.day in partAssign[1] and slot.time == partAssign[2]):
+                print("slot day: ", slot.day, "slot time ", slot.time, " practice.time ", partAssign[2])
+                practiceSchedule[slot].append(partAssign[0])
     else:
-        gameSchedule[partAssign[1]].append(partAssign[0])
+        for slot in list(gameSchedule.keys()):
+            if (slot.day in partAssign[1] and slot.time == partAssign[2]):
+                gameSchedule[slot].append(partAssign[0])
 
 # print(initial_game_input)
 # print(initial_practice_input)
@@ -128,6 +133,6 @@ for slot, sList in gameSchedule.items():
 
 for slot, sList in practiceSchedule.items():
     for session in sList:
-        print('{:<30s} {:<10s}'.format(session.fullname, ":" + slot.day + ", " + time))
+        print('{:<30s} {:<10s}'.format(session.fullname, ":" + slot.day + ", " + str(slot.time)))
 
 
