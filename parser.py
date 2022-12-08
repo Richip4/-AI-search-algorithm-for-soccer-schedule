@@ -178,10 +178,10 @@ def parser():
     for i in range(len(notCompatible)):
         if (notCompatible[i][0] in gameAndPracNames) == False:
             print("Session " + notCompatible[i][0] + " in notCompatible is not a game or practice")  
-            # quit()  
+            quit()  
         elif (notCompatible[i][1] in gameAndPracNames) == False:
             print("Session " + notCompatible[i][1] + " in notCompatible is not a game or practice") 
-            # quit()
+            quit()
 
     # creates subarray of gameSlot and practiceSlot that are evening slots
     for i in range(len(gameSlots)):
@@ -204,7 +204,7 @@ def parser():
     #     print("game", i, ":", games[i])
     # for i in range(len(practices)):
     #     print("practice", i, ":", practices[i])
-    print("not compatible:", notCompatible)
+    # print("not compatible:", notCompatible)
     # print("unwanted:", unwanted)
     # print("preferences:", preferences)
     # for i in range(len(prefTemp)):
