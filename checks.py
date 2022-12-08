@@ -3,7 +3,7 @@ import copy
 
 
 def check_hard_constraints(node, notCompatible, unwanted, eveningGameSlots, eveningPracticeSlots):
-    for slot in node.game_schedule:
+    for slot in list(node.game_schedule.keys()):
 
         # check game max... min checked in check_save
         if len(node.game_schedule[slot]) > slot.sessionMax:
@@ -29,8 +29,10 @@ def check_hard_constraints(node, notCompatible, unwanted, eveningGameSlots, even
 
             # check if unwanted game is set
             for not_wanted in unwanted:
-                if ((session.league + " DIV " + str(session.division)) in not_wanted[0]) and (
-                        not_wanted[1].replace(":", "") == slot.day + " " + slot.time):
+                #if ((session.league + " DIV " + str(session.division)) in not_wanted[0]) and (not_wanted[1].replace(":", "") == slot.day + " " + str(slot.time)):
+                #print("session name" + session.fullname + "not wanted" + not_wanted[0])
+                if ((session.fullname == not_wanted[0]) and (slot.day == not_wanted[1][0:2]) and (str(slot.time) == not_wanted[1][3:].replace(":", "")) ):
+                    #print("retruns FALSE")
                     return False
 
             # check not compatible games are set to each other
@@ -45,7 +47,7 @@ def check_hard_constraints(node, notCompatible, unwanted, eveningGameSlots, even
     # if there is a booking for u12t1 or u13t1:
     u13t1s_requested = False
     u12t1s_requested = False
-    for slot in node.practice_schedule:
+    for slot in list(node.practice_schedule.keys()):
         for session in node.practice_schedule[slot]:
             if "U13T1S" in session.league:
                 u13t1s_requested = True
@@ -68,22 +70,23 @@ def check_hard_constraints(node, notCompatible, unwanted, eveningGameSlots, even
 
             # check if unwanted game is set
             for not_wanted in unwanted:
-                if (session.fullname == not_wanted[0]) and (
-                        not_wanted[1].replace(":", "") == slot.day + " " + slot.time):
+                #if (session.fullname == not_wanted[0]) and (not_wanted[1].replace(":", "") == slot.day + " " + slot.time):
+                if ((session.fullname == not_wanted[0]) and (slot.day == not_wanted[1][0:2]) and (str(slot.time) == not_wanted[1][3:].replace(":", ""))):  
                     return False
 
             for bad_pair in notCompatible:
                 if session.fullname == bad_pair[0]:
-                    for session2 in node.game_schedule[slot]:
+                    for session2 in node.practice_schedule[slot]:
                         if session2.fullname == bad_pair[1]:
                             return False
 
+        #THIS WORKS NOW BUT COMMENTED OUT THE FIRST IF
         #   u12t1s cannot overlap u12t1,
         #   u13t1s """""""""""""" u13t1
         for session in node.practice_schedule[slot]:
             for session2 in node.practice_schedule[slot]:
-                if (session.league == session2.league) and (session.division == session2.division):
-                    return False
+                # if (session.league == session2.league) and (session.division == session2.division):
+                #     return False
                 # check if t1 in session then check other sessions to see if duplicate, then go to next session
                 if ("U13T1 " in (session.league + " ")) and ("U13T1S " in (session2.league + " ")) or \
                         ("U12T1 " in (session.league + " ")) and ("U12T1S " in (session2.league + " ")):
@@ -154,14 +157,14 @@ def check_soft_constraints(node, pref, penGameMin, penPracticeMin, pairs, penNot
         for session in node.game_schedule[slot]:
             for pref_slot in pref:
                 if session.fullname in pref_slot:
-                    if slot.day + " " + slot.time != pref_slot[1]:
+                    if slot.day + " " + str(slot.time) != pref_slot[1]:
                         pref_eval = pref_eval + int(pref_slot[2])
 
     for slot in node.practice_schedule:
         for session in node.practice_schedule[slot]:
             for pref_slot in pref:
                 if session.fullname in pref_slot:
-                    if slot.day + " " + slot.time != pref_slot[1]:
+                    if slot.day + " " + str(slot.time) != pref_slot[1]:
                         pref_eval = pref_eval + int(pref_slot[2])
 
     # pair penalty

@@ -159,6 +159,6 @@ def parser():
     # for i in range(len(eveningPracticeSlots)):
     #     print("evening prac slot", i, ":", eveningPracticeSlots[i])
 
-    return [gameSlots, practiceSlots, games, practices, notCompatible, unwanted, preferences, pair, partialAssignments, eveningGameSlots, eveningPracticeSlots]
+    return [gameSlots, practiceSlots, games, practices, notCompatible, unwanted, preferences, pair, partialAssignments, eveningGameSlots, eveningPracticeSlots, int(wminfilled), int(wpair), int(wpref), int(wsecdiff), int(penGameMin), int(penNotPaired), int(penPracticeMin), int(penSection)]
 
 # parser()
