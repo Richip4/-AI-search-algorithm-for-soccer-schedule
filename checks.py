@@ -197,22 +197,25 @@ def check_soft_constraints(node, pref, penGameMin, penPracticeMin, pairs, penNot
             pair_eval = pair_eval + penNotPair
         isIn = False
 
-    print("pair eval: " + str(pair_eval))
+    #print("pair eval: " + str(pair_eval))
 
     # secdiff soft constraint
     secdiff_eval = 0
     for slot in node.game_schedule:
         checked_sess = ""
+        cont = False
         for session in node.game_schedule[slot]:
             if checked_sess == session.league:
                 continue
             for session2 in node.game_schedule[slot]:
                 if (session.league == session2.league) and (session.division != session2.division):
                     checked_sess = session.league
+                    #print(session.league, session2.league)
                     secdiff_eval = secdiff_eval + penSecdiff
                     break
     #print("secdiff eval: " + str(secdiff_eval))
 
+    #print("minfill weight: " + str(wMinFill) + ", prefweight: " + str(wPref) + ", pairevalweight: " + str(wPair) + ", secdiffweight: " + str(wSecDiff))
     eval = min_eval*wMinFill + pref_eval*wPref + pair_eval*wPair + secdiff_eval*wSecDiff
     return eval
 

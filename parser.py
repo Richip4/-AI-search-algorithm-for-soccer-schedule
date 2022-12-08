@@ -11,7 +11,7 @@ def parser():
     penGameMin = sys.argv[6]
     penPracticeMin = sys.argv[7]
     penNotPaired = sys.argv[8]
-    penSection = sys.argv[9]
+    penSection = 5
 
     gameSlots = []
     practiceSlots = []

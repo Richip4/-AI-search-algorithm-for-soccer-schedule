@@ -281,7 +281,8 @@ if (final == None):
 
 gameSchedule = final.game_schedule
 practiceSchedule = final.practice_schedule
-evalVal = check.check_soft_constraints(final, input[6], input[15],input[17], input[7], input[16], input[14], input[11], input[13], input[12], input[14])
+#print("FINAL")
+evalVal = check.check_soft_constraints(final, input[6], input[15],input[17], input[7], input[16], input[18], input[11], input[13], input[12], input[14])
 #print(practiceSchedule)
 #print(gameSchedule[input[0][0]])
 #print(gameSchedule[input[0][1]])
