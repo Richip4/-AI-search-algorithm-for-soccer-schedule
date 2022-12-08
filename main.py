@@ -15,14 +15,17 @@ def fLeaf(aRoot):
     childrenSize = len(leafNodes)
     leafIndex = random.randint(0,childrenSize-1)
     chosenLeaf = list(leafNodes)[leafIndex]
+    #chosenLeaf = leafNodes[leafIndex]
 
     return chosenLeaf 
 
 def findLeafNodes(visited, leafNodes, node):
     if node not in visited:
         visited.add(node)
+        #visited.append(node)
         if (len(node.children) == 0):
             leafNodes.add(node)
+            #leafNodes.append(node)
             return None
         else:
             for child in node.children:
@@ -63,38 +66,42 @@ def div(aLeafNode, games, practices):
                 for b in thePractice:
                     #print(a.fullname, " ", b.fullname)
                     if(a.fullname.replace(" ", "") == b.fullname.replace(" ", "")):
+                        print("Removing ", b.fullname)
                         thePractice.remove(b)
                         #print(thePractice)
                 
-        for i in thePractice:
-            for key in list(practiceSchedule.keys()):
-                newSchedule = {}
-                for a in list(practiceSchedule.keys()):
-                    newSchedule[a] = list(practiceSchedule[a])
-                newSchedule[key].append(i)
-                newNode = aTree.Node(gameSchedule, newSchedule, aLeafNode, [])
+    for i in thePractice:
+        for key in list(practiceSchedule.keys()):
+            newSchedule = {}
+            for a in list(practiceSchedule.keys()):
+                newSchedule[a] = list(practiceSchedule[a])
+            newSchedule[key].append(i)
+            newNode = aTree.Node(aLeafNode.game_schedule, newSchedule, aLeafNode, [])
                 #print(check.check_hard_constraints(newNode, input[4], input[5], input[9], input[10]))
-                if(check.check_hard_constraints(newNode, input[4], input[5], input[9], input[10])):
+            if(check.check_hard_constraints(newNode, input[4], input[5], input[9], input[10])):
                 #print("adding")
-                    aLeafNode.children.append(newNode)
+                aLeafNode.children.append(newNode)
 
 
 def doEveningSlots(aNode, eveningGameSlots, eveningPracticeSlots, games, practices):
-    sizeOfEveGame = len(eveningGameSlots)
-    sizeOfEvePract = len(eveningPracticeSlots)
     for i in games:
         if (i.division >= 9):
             for a in eveningGameSlots:
-                newSchedule = aNode.game_schedule.copy()
+                newSchedule = {}
+                for b in list(gameSchedule.keys()):
+                    newSchedule[b] = list(gameSchedule[b])
                 newSchedule[a].append(i)
-                newNode = aTree.Node(aNode.game_schedule, aNode.practiceSchedule, aNode, [])
+                newNode = aTree.Node(newSchedule, aNode.practice_schedule, aNode, [])
                 aNode.children.append(newNode)
 
     for i in practices:
         if (i.division >= 9):
             for a in eveningPracticeSlots:
                 #print("adding practice", i.division)
-                newSchedule = aNode.practice_schedule.copy()
+                for a in eveningGameSlots:
+                    newSchedule = {}
+                    for b in list(practiceSchedule.keys()):
+                        newSchedule[b] = list(practiceSchedule[b])
                 newSchedule[a].append(i)
                 newNode = aTree.Node(aNode.game_schedule, newSchedule, aNode, [])
                 aNode.children.append(newNode)
