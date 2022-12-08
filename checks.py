@@ -37,9 +37,9 @@ def check_hard_constraints(node, notCompatible, unwanted, eveningGameSlots, even
 
             # check not compatible games are set to each other
             for bad_pair in notCompatible:
-                if (session.league + " DIV " + str(session.division)) in bad_pair[0]:
+                if session.fullname in bad_pair[0]:
                     for session2 in node.game_schedule[slot]:
-                        if (session2.league + " DIV" + str(session2.division)) in bad_pair[1]:
+                        if session2.fullname in bad_pair[1]:
                             return False
 
     # practices below
@@ -71,9 +71,10 @@ def check_hard_constraints(node, notCompatible, unwanted, eveningGameSlots, even
             # check if unwanted game is set
             for not_wanted in unwanted:
                 #if (session.fullname == not_wanted[0]) and (not_wanted[1].replace(":", "") == slot.day + " " + slot.time):
-                if ((session.fullname == not_wanted[0]) and (slot.day == not_wanted[1][0:2]) and (str(slot.time) == not_wanted[1][3:].replace(":", ""))):  
+                if (session.fullname == not_wanted[0]) and (slot.day == not_wanted[1][0:2]) and (str(slot.time) == not_wanted[1][3:].replace(":", "")):
                     return False
 
+            # not compat practices
             for bad_pair in notCompatible:
                 if session.fullname == bad_pair[0]:
                     for session2 in node.practice_schedule[slot]:
@@ -107,6 +108,11 @@ def check_hard_constraints(node, notCompatible, unwanted, eveningGameSlots, even
                         if (g_session.league == p_session.league) and ((p_session.division == 0) or
                                                                        (g_session.division == p_session.division)):
                             return False
+
+                        for bad_pair in notCompatible:
+                            if (g_session.fullname == bad_pair[0]) and (p_session.fullname == bad_pair[1]):
+                                return False
+
     return True
 
     # not partassign (dont need to check this since all partassign are assigned at the start) ignore
