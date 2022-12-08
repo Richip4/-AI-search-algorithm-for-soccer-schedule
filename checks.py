@@ -97,13 +97,14 @@ def check_hard_constraints(node, notCompatible, unwanted, eveningGameSlots, even
         for p_slot in node.practice_schedule:
             if overlapping(g_slot, p_slot):
                 for g_session in node.game_schedule[g_slot]:
-                    for p_session in node.game_schedule[p_slot]:
+                    for p_session in node.practice_schedule[p_slot]:
                         # u12t1s cant overlap
                         if (u12t1s_requested and ("U12T1" in g_session.league) and ("U12T1S" in p_session)) or (
                                 u13t1s_requested and ("U13T1" in g_session.league) and ("U13T1S" in p_session)):
                             return False
 
                         # check nocompat same division
+                        print(g_session.league, p_session.league)
                         if (g_session.league == p_session.league) and ((p_session.division == 0) or
                                                                        (g_session.division == p_session.division)):
                             return False
@@ -113,21 +114,21 @@ def check_hard_constraints(node, notCompatible, unwanted, eveningGameSlots, even
 
 
 def overlapping(game_slot, practice_slot):
-    if (game_slot.day == "MO") and (practice_slot == "FR") and ((game_slot.time == practice_slot.time) or (
+    if (game_slot.day == "MO") and (practice_slot.day == "FR") and ((game_slot.time == practice_slot.time) or (
             game_slot.time == practice_slot.time + 100)):
         return True
 
     elif game_slot.day != practice_slot.day:
         return False
 
-    elif (game_slot.day == "MO") and (practice_slot == "MO") and (game_slot.time == practice_slot.time):
+    elif (game_slot.day == "MO") and (practice_slot.day == "MO") and (game_slot.time == practice_slot.time):
         return True  # monday slots are the same for both prac and game
 
-    elif (game_slot.day == "TU") and (practice_slot == "TU"):
-        if (game_slot.day % 100 == 30) and ((game_slot.time - 30 == practice_slot.time) or (
+    elif (game_slot.day == "TU") and (practice_slot.day == "TU"):
+        if (game_slot.time % 100 == 30) and ((game_slot.time - 30 == practice_slot.time) or (
                 game_slot.time + 70 == practice_slot.time)):
             return True
-        elif (game_slot.day % 100 == 0) and ((game_slot.time == practice_slot.time) or (
+        elif (game_slot.time % 100 == 0) and ((game_slot.time == practice_slot.time) or (
                 game_slot.time + 100 == practice_slot.time)):
             return True
     else:
