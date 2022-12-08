@@ -1,3 +1,4 @@
+#class for each node in the And-Tree
 class Node:
 
     def __init__(self, games, practices, parent, children):
@@ -7,6 +8,7 @@ class Node:
         self.children = children
         self.solved = False
 
+#class for the tree itself 
 class Tree:
     root = None
     solved = False
@@ -14,6 +16,7 @@ class Tree:
     def __init__(self, root):
         self.root = root
 
+#class for each game/practice
 class Session:
 
     def __init__(self, l, d, p, fn):
@@ -25,6 +28,7 @@ class Session:
     def __str__(self):
         return "league: " + str(self.league) + ", division: " + str(self.division) + ", practice?: " + str(self.is_practice) + ", fullname: " + self.fullname
 
+#class for each time slot 
 class Slot:
 
     def __init__(self, d, t, mx, mn, prac):
