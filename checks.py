@@ -157,15 +157,16 @@ def check_soft_constraints(node, pref, penGameMin, penPracticeMin, pairs, penNot
         for session in node.game_schedule[slot]:
             for pref_slot in pref:
                 if session.fullname in pref_slot:
-                    if slot.day + " " + str(slot.time) != pref_slot[1]:
+                    if slot.day + " " + str(slot.time) != pref_slot[0].replace(":", ""):
                         pref_eval = pref_eval + int(pref_slot[2])
 
     for slot in node.practice_schedule:
         for session in node.practice_schedule[slot]:
             for pref_slot in pref:
                 if session.fullname in pref_slot:
-                    if slot.day + " " + str(slot.time) != pref_slot[1]:
+                    if slot.day + " " + str(slot.time) != pref_slot[0].replace(":", ""):
                         pref_eval = pref_eval + int(pref_slot[2])
+    print(pref_eval)
 
     # pair penalty
     gameSchedule = node.game_schedule
