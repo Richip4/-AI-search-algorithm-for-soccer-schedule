@@ -187,12 +187,17 @@ def check_soft_constraints(node, pref, penGameMin, penPracticeMin, pairs, penNot
                         for practice in node.practice_schedule[pslot]:
                             if practice.fullname in pair:
                                 isIn = True
+                    #for gslot in list(gameSchedule.keys()):
+                    for game2 in node.game_schedule[slot]:
+                        if (game2.fullname in pair) and (game2.fullname != game.fullname):
+                            #print(game2.fullname, game.fullname)
+                            isIn = True
 
         if not isIn:
             pair_eval = pair_eval + penNotPair
         isIn = False
 
-    #print("pair eval: " + str(pair_eval))
+    print("pair eval: " + str(pair_eval))
 
     # secdiff soft constraint
     secdiff_eval = 0

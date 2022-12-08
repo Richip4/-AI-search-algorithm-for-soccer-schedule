@@ -115,13 +115,14 @@ def parser():
                 lines[i] = lines[i].replace("\n", "")
                 splited = lines[i].split(", ", 1)
                 name = splited[0]
-                splited[1] = splited[1].split(", ")
-                splited[0] = splited[0].split(" ")
-                splited[1][1] = int(splited[1][1].replace(":", ""))
-                if "PRC" in splited[0]:
-                    partialAssignments.append([Session(splited[0][0] + splited[0][1], int(splited[0][3]), True, name), splited[1][0], splited[1][1]])
-                else:
-                    partialAssignments.append([Session(splited[0][0] + splited[0][1], int(splited[0][3]), False, name), splited[1][0], splited[1][1]])
+                if len(splited) > 1:
+                    splited[1] = splited[1].split(", ")
+                    splited[0] = splited[0].split(" ")
+                    splited[1][1] = int(splited[1][1].replace(":", ""))
+                    if "PRC" in splited[0]:
+                        partialAssignments.append([Session(splited[0][0] + splited[0][1], int(splited[0][3]), True, name), splited[1][0], splited[1][1]])
+                    else:
+                        partialAssignments.append([Session(splited[0][0] + splited[0][1], int(splited[0][3]), False, name), splited[1][0], splited[1][1]])
                 # i = i + 1
                 # if i == len(lines):
                 #    break
