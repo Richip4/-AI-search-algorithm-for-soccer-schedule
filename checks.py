@@ -110,7 +110,7 @@ def check_hard_constraints(node, notCompatible, unwanted, eveningGameSlots, even
                             return False
 
                         for bad_pair in notCompatible:
-                            if (g_session.fullname == bad_pair[0]) and (p_session.fullname == bad_pair[1]):
+                            if ((g_session.fullname == bad_pair[0]) and (p_session.fullname == bad_pair[1])) or ((p_session.fullname == bad_pair[0]) and (g_session.fullname == bad_pair[1])):
                                 return False
 
     return True
