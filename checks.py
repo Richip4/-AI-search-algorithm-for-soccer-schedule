@@ -104,7 +104,6 @@ def check_hard_constraints(node, notCompatible, unwanted, eveningGameSlots, even
                             return False
 
                         # check nocompat same division
-                        print(g_session.league, p_session.league)
                         if (g_session.league == p_session.league) and ((p_session.division == 0) or
                                                                        (g_session.division == p_session.division)):
                             return False
