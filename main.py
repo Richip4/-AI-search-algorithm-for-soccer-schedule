@@ -66,7 +66,7 @@ def div(aLeafNode, games, practices):
                 for b in thePractice:
                     #print(a.fullname, " ", b.fullname)
                     if(a.fullname.replace(" ", "") == b.fullname.replace(" ", "")):
-                        print("Removing ", b.fullname)
+                        #print("Removing ", b.fullname)
                         thePractice.remove(b)
                         #print(thePractice)
                 

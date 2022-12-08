@@ -138,32 +138,34 @@ def check_soft_constraints(node, pref, penGameMin, penPracticeMin, pairs, penNot
     # min penalty
     gameSchedule = node.game_schedule
     min_eval = 0
-    for i in list(gameSchedule.keys()):
-        if (len(gameSchedule[i]) < i.sessionMin):
-            diff = i.sessionMin - len(gameSchedule[i])
+    for slot in list(gameSchedule.keys()):
+        if len(gameSchedule[slot]) < slot.sessionMin:
+            diff = slot.sessionMin - len(gameSchedule[slot])
             pen = diff * penGameMin
+            print("penalty for " + gameSchedule[slot] + " is " + pen)
             min_eval = min_eval + pen
 
     practiceSchedule = node.practice_schedule
-    for i in list(practiceSchedule.keys()):
-        if (len(practiceSchedule[i]) < i.sessionMin):
-            diff = i.sessionMin - len(practiceSchedule[i])
+    for slot in list(practiceSchedule.keys()):
+        if len(practiceSchedule[slot]) < slot.sessionMin:
+            diff = slot.sessionMin - len(practiceSchedule[slot])
             pen = diff * penPracticeMin
+            print("penalty for " + gameSchedule[slot] + " is " + pen)
             min_eval = min_eval + pen
 
     pref_eval = 0
     # pref soft constraint
     for slot in node.game_schedule:
-        for session in node.game_schedule[slot]:
+        for game in node.game_schedule[slot]:
             for pref_slot in pref:
-                if session.fullname in pref_slot:
+                if game.fullname in pref_slot:
                     if slot.day + " " + str(slot.time) != pref_slot[0].replace(":", ""):
                         pref_eval = pref_eval + int(pref_slot[2])
 
     for slot in node.practice_schedule:
-        for session in node.practice_schedule[slot]:
+        for practice in node.practice_schedule[slot]:
             for pref_slot in pref:
-                if session.fullname in pref_slot:
+                if practice.fullname in pref_slot:
                     if slot.day + " " + str(slot.time) != pref_slot[0].replace(":", ""):
                         pref_eval = pref_eval + int(pref_slot[2])
 
@@ -172,18 +174,23 @@ def check_soft_constraints(node, pref, penGameMin, penPracticeMin, pairs, penNot
     gameSchedule = node.game_schedule
     isIn = False
     pair_eval = 0
-    for i in list(gameSchedule.keys()):
-        for a in gameSchedule[i]:
-            for b in pairs:
-                if (a in b):
-                    for c in node.practice_schedule[i]:
-                        if (c != a and c in b):
-                            isIn = True
+    for slot in list(gameSchedule.keys()):
+        for game in gameSchedule[slot]:
+            for pair in pairs:
+                if game.fullname in pair:
+                    for pslot in list(practiceSchedule.keys()):
+                        for practice in node.practice_schedule[pslot]:
+                            if practice.fullname in pair:
+                                isIn = True
+                            #print("practice " + practice.fullname + " is not in pair " + str(pair))
+                    #print("game " + game.fullname + " is not in pair " + str(pair))
 
-                if (isIn == False):
-                    pair_eval = pair_eval + penNotPair
+                    if not isIn:
+                        #print("penalty for " + game.fullname + " and " + practice.fullname + " is " + str(penNotPair))
+                        pair_eval = pair_eval + penNotPair
 
-                isIn = False
+                    isIn = False
+    #print("pair eval: " + str(pair_eval))
 
     # secdiff soft constraint
     secdiff_eval = 0
