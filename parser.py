@@ -218,4 +218,4 @@ def parser():
 
     return [gameSlots, practiceSlots, games, practices, notCompatible, unwanted, preferences, pair, partialAssignments, eveningGameSlots, eveningPracticeSlots, int(wminfilled), int(wpair), int(wpref), int(wsecdiff), int(penGameMin), int(penNotPaired), int(penPracticeMin), int(penSection)]
 
-parser()
+# parser()
