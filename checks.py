@@ -142,7 +142,6 @@ def check_soft_constraints(node, pref, penGameMin, penPracticeMin, pairs, penNot
         if len(gameSchedule[slot]) < slot.sessionMin:
             diff = slot.sessionMin - len(gameSchedule[slot])
             pen = diff * penGameMin
-            print("penalty for " + gameSchedule[slot] + " is " + pen)
             min_eval = min_eval + pen
     #print("min eval: " + str(min_eval))
 
@@ -151,7 +150,6 @@ def check_soft_constraints(node, pref, penGameMin, penPracticeMin, pairs, penNot
         if len(practiceSchedule[slot]) < slot.sessionMin:
             diff = slot.sessionMin - len(practiceSchedule[slot])
             pen = diff * penPracticeMin
-            print("penalty for " + gameSchedule[slot] + " is " + pen)
             min_eval = min_eval + pen
 
     pref_eval = 0
