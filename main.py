@@ -214,17 +214,27 @@ for i in input[1]:
 #         else:
 #             initial_game_input[part_assign[1]] = [ part_assign[0] ]
 
+doesSpecialExist = False
+checkSpecial = False
+
 for game in input[2]:
     if("CMSA U12T1" in game.fullname):
+        checkSpecial = True
         for slot in list(practiceSchedule.keys()):
             if(slot.day == "TU" and slot.time == 1800):
                 newSes = aTree.Session("CMSA U12T1S", 0, True, "CMSA U12T1S")
                 practiceSchedule[slot].append(newSes)
     elif("CMSA U13T1" in game.fullname):
+        checkSpecial = True
         for slot in list(practiceSchedule.keys()):
             if(slot.day == "TU" and slot.time == 1800):
+                doesSpecialExist = True
                 newSes = aTree.Session("CMSA U13T1S", 0, True, "CMSA U13T1S")
                 practiceSchedule[slot].append(newSes)
+
+if (checkSpecial == True and doesSpecialExist == False):
+    print("Cannot create valid schedule from input. Needs to make special booking at TU 18:00 but that slot does not exist.")
+    quit()
 
 for partAssign in input[8]:
     if partAssign[0].is_practice:
