@@ -222,6 +222,7 @@ for game in input[2]:
         checkSpecial = True
         for slot in list(practiceSchedule.keys()):
             if(slot.day == "TU" and slot.time == 1800):
+                doesSpecialExist = True
                 newSes = aTree.Session("CMSA U12T1S", 0, True, "CMSA U12T1S")
                 practiceSchedule[slot].append(newSes)
     elif("CMSA U13T1" in game.fullname):
