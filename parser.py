@@ -128,6 +128,58 @@ def parser():
 
     inputFile.close()
 
+    gameAndPracNames = []
+    for i in range(len(games)):
+        gameAndPracNames.append(games[i].fullname)
+    for i in range(len(practices)):
+        gameAndPracNames.append(practices[i].fullname)
+
+    for i in range(len(preferences)):
+        if (preferences[i][1] in gameAndPracNames) == False:
+            print("Session " + preferences[i][1] + " in preferences is not a game or practice")    
+            quit()
+
+    for i in range(len(unwanted)):
+            if (unwanted[i][0] in gameAndPracNames) == False:
+                print("Session " + unwanted[i][0] + " in unwanted is not a game or practice")    
+                quit()
+
+    for i in range(len(partialAssignments)):
+            if (partialAssignments[i][0].fullname in gameAndPracNames) == False:
+                print("Session " + partialAssignments[i][0].fullname + " in partial assignments is not a game or practice")    
+                quit()
+            # if (partialAssignments[i][0].is_practice == False):
+            #     slotExists = False
+            #     for j in range(len(gameSlots)):
+            #         if gameSlots[i].day == partialAssignments[i][1] and gameSlots[i].time == partialAssignments[i][2]:
+            #             slotExists = True
+            #             break
+            # elif (partialAssignments[i][0].is_practice == True):
+            #                 slotExists = False
+            #                 for j in range(len(practiceSlots)):
+            #                     if practiceSlots[i].day == partialAssignments[i][1] and practiceSlots[i].time == partialAssignments[i][2]:
+            #                         slotExists = True
+            #                         break
+            # if slotExists == False:
+            #     print("Slot " + partialAssignments[i][1] + str(partialAssignments[i][2]) + " for " + partialAssignments[i][0].fullname + " does not exist")
+            #     quit()
+
+    for i in range(len(pair)):
+        if (pair[i][0] in gameAndPracNames) == False:
+            print("Session " + pair[i][0] + " in pairs is not a game or practice")  
+            quit()  
+        elif (pair[i][1] in gameAndPracNames) == False:
+            print("Session " + pair[i][1] + " in pairs is not a game or practice") 
+            quit()
+
+    for i in range(len(notCompatible)):
+        if (notCompatible[i][0] in gameAndPracNames) == False:
+            print("Session " + notCompatible[i][0] + " in notCompatible is not a game or practice")  
+            quit()  
+        elif (notCompatible[i][1] in gameAndPracNames) == False:
+            print("Session " + notCompatible[i][1] + " in notCompatible is not a game or practice") 
+            quit()
+
     # creates subarray of gameSlot and practiceSlot that are evening slots
     for i in range(len(gameSlots)):
         if gameSlots[i].time >= 1800:
@@ -152,6 +204,8 @@ def parser():
     # print("not compatible:", notCompatible)
     # print("unwanted:", unwanted)
     # print("preferences:", preferences)
+    # for i in range(len(prefTemp)):
+    #     print("pref", i, ":", prefTemp[i])
     # print("pair:", pair)
     # print("partial assignments:", partialAssignments)
     # for i in range(len(eveningGameSlots)):
