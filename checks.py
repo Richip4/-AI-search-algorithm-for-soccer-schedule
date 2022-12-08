@@ -144,6 +144,7 @@ def check_soft_constraints(node, pref, penGameMin, penPracticeMin, pairs, penNot
             pen = diff * penGameMin
             print("penalty for " + gameSchedule[slot] + " is " + pen)
             min_eval = min_eval + pen
+    #print("min eval: " + str(min_eval))
 
     practiceSchedule = node.practice_schedule
     for slot in list(practiceSchedule.keys()):
@@ -168,28 +169,25 @@ def check_soft_constraints(node, pref, penGameMin, penPracticeMin, pairs, penNot
                 if practice.fullname in pref_slot:
                     if slot.day + " " + str(slot.time) != pref_slot[0].replace(":", ""):
                         pref_eval = pref_eval + int(pref_slot[2])
-
+    #print("pref eval: " + str(pref_eval))
 
     # pair penalty
     gameSchedule = node.game_schedule
     isIn = False
     pair_eval = 0
-    for slot in list(gameSchedule.keys()):
-        for game in gameSchedule[slot]:
-            for pair in pairs:
+    for pair in pairs:
+        for slot in list(gameSchedule.keys()):
+            for game in gameSchedule[slot]:
                 if game.fullname in pair:
                     for pslot in list(practiceSchedule.keys()):
                         for practice in node.practice_schedule[pslot]:
                             if practice.fullname in pair:
                                 isIn = True
-                            #print("practice " + practice.fullname + " is not in pair " + str(pair))
-                    #print("game " + game.fullname + " is not in pair " + str(pair))
 
-                    if not isIn:
-                        #print("penalty for " + game.fullname + " and " + practice.fullname + " is " + str(penNotPair))
-                        pair_eval = pair_eval + penNotPair
+        if not isIn:
+            pair_eval = pair_eval + penNotPair
+        isIn = False
 
-                    isIn = False
     #print("pair eval: " + str(pair_eval))
 
     # secdiff soft constraint
@@ -204,7 +202,7 @@ def check_soft_constraints(node, pref, penGameMin, penPracticeMin, pairs, penNot
                     checked_sess = session.league
                     secdiff_eval = secdiff_eval + penSecdiff
                     break
-    print(secdiff_eval)
+    #print("secdiff eval: " + str(secdiff_eval))
 
     eval = min_eval*wMinFill + pref_eval*wPref + pair_eval*wPair + secdiff_eval*wSecDiff
     return eval
