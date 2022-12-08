@@ -37,9 +37,9 @@ def check_hard_constraints(node, notCompatible, unwanted, eveningGameSlots, even
 
             # check not compatible games are set to each other
             for bad_pair in notCompatible:
-                if (session.league + " DIV " + str(session.division)) in bad_pair[0]:
+                if session.fullname in bad_pair[0]:
                     for session2 in node.game_schedule[slot]:
-                        if (session2.league + " DIV" + str(session2.division)) in bad_pair[1]:
+                        if session2.fullname in bad_pair[1]:
                             return False
 
     # practices below
@@ -71,9 +71,10 @@ def check_hard_constraints(node, notCompatible, unwanted, eveningGameSlots, even
             # check if unwanted game is set
             for not_wanted in unwanted:
                 #if (session.fullname == not_wanted[0]) and (not_wanted[1].replace(":", "") == slot.day + " " + slot.time):
-                if ((session.fullname == not_wanted[0]) and (slot.day == not_wanted[1][0:2]) and (str(slot.time) == not_wanted[1][3:].replace(":", ""))):  
+                if (session.fullname == not_wanted[0]) and (slot.day == not_wanted[1][0:2]) and (str(slot.time) == not_wanted[1][3:].replace(":", "")):
                     return False
 
+            # not compat practices
             for bad_pair in notCompatible:
                 if session.fullname == bad_pair[0]:
                     for session2 in node.practice_schedule[slot]:
@@ -97,7 +98,7 @@ def check_hard_constraints(node, notCompatible, unwanted, eveningGameSlots, even
         for p_slot in node.practice_schedule:
             if overlapping(g_slot, p_slot):
                 for g_session in node.game_schedule[g_slot]:
-                    for p_session in node.game_schedule[p_slot]:
+                    for p_session in node.practice_schedule[p_slot]:
                         # u12t1s cant overlap
                         if (u12t1s_requested and ("U12T1" in g_session.league) and ("U12T1S" in p_session)) or (
                                 u13t1s_requested and ("U13T1" in g_session.league) and ("U13T1S" in p_session)):
@@ -107,27 +108,32 @@ def check_hard_constraints(node, notCompatible, unwanted, eveningGameSlots, even
                         if (g_session.league == p_session.league) and ((p_session.division == 0) or
                                                                        (g_session.division == p_session.division)):
                             return False
+
+                        for bad_pair in notCompatible:
+                            if ((g_session.fullname == bad_pair[0]) and (p_session.fullname == bad_pair[1])) or ((p_session.fullname == bad_pair[0]) and (g_session.fullname == bad_pair[1])):
+                                return False
+
     return True
 
     # not partassign (dont need to check this since all partassign are assigned at the start) ignore
 
 
 def overlapping(game_slot, practice_slot):
-    if (game_slot.day == "MO") and (practice_slot == "FR") and ((game_slot.time == practice_slot.time) or (
+    if (game_slot.day == "MO") and (practice_slot.day == "FR") and ((game_slot.time == practice_slot.time) or (
             game_slot.time == practice_slot.time + 100)):
         return True
 
     elif game_slot.day != practice_slot.day:
         return False
 
-    elif (game_slot.day == "MO") and (practice_slot == "MO") and (game_slot.time == practice_slot.time):
+    elif (game_slot.day == "MO") and (practice_slot.day == "MO") and (game_slot.time == practice_slot.time):
         return True  # monday slots are the same for both prac and game
 
-    elif (game_slot.day == "TU") and (practice_slot == "TU"):
-        if (game_slot.day % 100 == 30) and ((game_slot.time - 30 == practice_slot.time) or (
+    elif (game_slot.day == "TU") and (practice_slot.day == "TU"):
+        if (game_slot.time % 100 == 30) and ((game_slot.time - 30 == practice_slot.time) or (
                 game_slot.time + 70 == practice_slot.time)):
             return True
-        elif (game_slot.day % 100 == 0) and ((game_slot.time == practice_slot.time) or (
+        elif (game_slot.time % 100 == 0) and ((game_slot.time == practice_slot.time) or (
                 game_slot.time + 100 == practice_slot.time)):
             return True
     else:
@@ -142,15 +148,14 @@ def check_soft_constraints(node, pref, penGameMin, penPracticeMin, pairs, penNot
         if len(gameSchedule[slot]) < slot.sessionMin:
             diff = slot.sessionMin - len(gameSchedule[slot])
             pen = diff * penGameMin
-            print("penalty for " + gameSchedule[slot] + " is " + pen)
             min_eval = min_eval + pen
+    #print("min eval: " + str(min_eval))
 
     practiceSchedule = node.practice_schedule
     for slot in list(practiceSchedule.keys()):
         if len(practiceSchedule[slot]) < slot.sessionMin:
             diff = slot.sessionMin - len(practiceSchedule[slot])
             pen = diff * penPracticeMin
-            print("penalty for " + gameSchedule[slot] + " is " + pen)
             min_eval = min_eval + pen
 
     pref_eval = 0
@@ -168,28 +173,25 @@ def check_soft_constraints(node, pref, penGameMin, penPracticeMin, pairs, penNot
                 if practice.fullname in pref_slot:
                     if slot.day + " " + str(slot.time) != pref_slot[0].replace(":", ""):
                         pref_eval = pref_eval + int(pref_slot[2])
-
+    #print("pref eval: " + str(pref_eval))
 
     # pair penalty
     gameSchedule = node.game_schedule
     isIn = False
     pair_eval = 0
-    for slot in list(gameSchedule.keys()):
-        for game in gameSchedule[slot]:
-            for pair in pairs:
+    for pair in pairs:
+        for slot in list(gameSchedule.keys()):
+            for game in gameSchedule[slot]:
                 if game.fullname in pair:
                     for pslot in list(practiceSchedule.keys()):
                         for practice in node.practice_schedule[pslot]:
                             if practice.fullname in pair:
                                 isIn = True
-                            #print("practice " + practice.fullname + " is not in pair " + str(pair))
-                    #print("game " + game.fullname + " is not in pair " + str(pair))
 
-                    if not isIn:
-                        #print("penalty for " + game.fullname + " and " + practice.fullname + " is " + str(penNotPair))
-                        pair_eval = pair_eval + penNotPair
+        if not isIn:
+            pair_eval = pair_eval + penNotPair
+        isIn = False
 
-                    isIn = False
     #print("pair eval: " + str(pair_eval))
 
     # secdiff soft constraint
@@ -204,7 +206,7 @@ def check_soft_constraints(node, pref, penGameMin, penPracticeMin, pairs, penNot
                     checked_sess = session.league
                     secdiff_eval = secdiff_eval + penSecdiff
                     break
-    print(secdiff_eval)
+    #print("secdiff eval: " + str(secdiff_eval))
 
     eval = min_eval*wMinFill + pref_eval*wPref + pair_eval*wPair + secdiff_eval*wSecDiff
     return eval
