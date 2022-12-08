@@ -14,21 +14,7 @@ def fLeaf(aRoot, aVisited, aLeafNodes):
     
     #randomly generate a number within the bounds of the leaf node list and choose that leaf node
     childrenSize = len(leafNodes)
-    for aNode in leafNodes:
-        #print(len(aNode.children))
-        if(check.is_complete_schedule(aNode, input[2], input[3])):
-            aNode.solved = True
-            #print(div(aNode, input[2], input[3]))
-        if(aNode.solved == False):
-            #print("Not Solved")
-            for i in aNode.practice_schedule:
-                a = 10
-            #print(len(aNode.practice_schedule[i]))
-            #print(div(aNode, input[2], input[3]))
-            allSolved = False
 
-    # if (allSolved):
-    #     return None
     leafIndex = random.randint(0,childrenSize-1)
     chosenLeaf = list(leafNodes)[leafIndex]
     #chosenLeaf = leafNodes[leafIndex]
@@ -38,10 +24,8 @@ def fLeaf(aRoot, aVisited, aLeafNodes):
 def findLeafNodes(visited, leafNodes, node):
     if node not in visited:
         visited.add(node)
-        #visited.append(node)
         if (len(node.children) == 0):
             leafNodes.add(node)
-            #leafNodes.append(node)
             return None
         else:
             for child in node.children:
@@ -50,26 +34,23 @@ def findLeafNodes(visited, leafNodes, node):
 
 def div(aLeafNode, games, practices):
     #print("Running DIV")
-    if (aLeafNode.solved == True):
-        #print("Not Solvable")
-        return "Not solvable"
+    # if (check.is_complete_schedule(aLeafNode, input[2], input[3])):
+    #     aLeafNode.solved = True
 
-    aLeafNode.solved = True
+    if (aLeafNode.solved == True):
+        return None
+
     gameSchedule = aLeafNode.game_schedule
     theGames = copy.copy(games)
     allGamesAssigned = False
     allPracticesAssigned = False
     isSolvable = False
-    printSt = ""
 
     for i in list(gameSchedule.keys()):
-        #print(gameSchedule[i])
         if(len(gameSchedule[i]) > 0):
             for a in gameSchedule[i]:
                 for b in theGames:
-                    #print(a.fullname, " ", b.fullname)
                     if(a.fullname == b.fullname):
-                        #print("removing game ", b.fullname)
                         theGames.remove(b)
 
     for i in theGames:
@@ -79,18 +60,16 @@ def div(aLeafNode, games, practices):
                 newSchedule[a] = list(gameSchedule[a])
             newSchedule[key].append(i)
             newNode = aTree.Node(newSchedule, aLeafNode.practice_schedule, aLeafNode, [])
-            #newNode.solved = True
             if(check.check_hard_constraints(newNode, input[4], input[5], input[9], input[10])):
-                #print("adding ", i.fullname)
                 aLeafNode.children.append(newNode)
                 isSolvable = True
-                printSt = "adding game"
 
     if len(theGames) == 0:
         allGamesAssigned = True
-    if((allGamesAssigned == False) and isSolvable == False):
+    if (allGamesAssigned == False and isSolvable == False):
         aLeafNode.solved = True
-    #isSolvable = False
+
+    isSolvable = False
     practiceSchedule = aLeafNode.practice_schedule
     thePractice = copy.copy(practices)
 
@@ -98,11 +77,8 @@ def div(aLeafNode, games, practices):
         if(len(practiceSchedule[i]) > 0):
             for a in practiceSchedule[i]:
                 for b in thePractice:
-                    #print(a.fullname, " ", b.fullname)
                     if(a.fullname.replace(" ", "") == b.fullname.replace(" ", "")):
-                        #print("Removing ", b.fullname)
                         thePractice.remove(b)
-                        #print(thePractice)
 
     if len(thePractice) == 0:
         allPracticesAssigned = True
@@ -114,23 +90,16 @@ def div(aLeafNode, games, practices):
                 newSchedule[a] = list(practiceSchedule[a])
             newSchedule[key].append(i)
             newNode = aTree.Node(aLeafNode.game_schedule, newSchedule, aLeafNode, [])
-            #newNode.solved = True
-                #print(check.check_hard_constraints(newNode, input[4], input[5], input[9], input[10]))
             if(check.check_hard_constraints(newNode, input[4], input[5], input[9], input[10])):
-                #print("adding")
                 aLeafNode.children.append(newNode)
                 isSolvable = True
-                printSt = "adding practice"
-    #print(isSolvable)
-    if((allPracticesAssigned == False) and isSolvable == False):
-        aLeafNode.solved = True
+            
     if(allGamesAssigned and allPracticesAssigned):
+        aLeafNode.solved = True
+    if (allPracticesAssigned == False and isSolvable == False):
         aLeafNode.solved = True
     if(isSolvable == False):
         aLeafNode.solved == True
-    
-    return printSt
-
 
 def doEveningSlots(aNode, eveningGameSlots, eveningPracticeSlots, games, practices):
     for i in games:
@@ -146,7 +115,6 @@ def doEveningSlots(aNode, eveningGameSlots, eveningPracticeSlots, games, practic
     for i in practices:
         if (i.division >= 9):
             for a in eveningPracticeSlots:
-                #print("adding practice", i.division)
                 for a in eveningPracticeSlots:
                     newSchedule = {}
                     for b in list(practiceSchedule.keys()):
@@ -162,7 +130,8 @@ def a_tree(node, games, practices, notCompatible):
     while(notSolved):
         visited = set()
         leafNodes = set()
-        chosenLeaf = fLeaf(node, visited, leafNodes)
+        #chosenLeaf = fLeaf(node, visited, leafNodes)
+        fLeaf(node, visited, leafNodes)
         minEval = 1000
         isAllSolved = True
         chosenSol = None
@@ -171,45 +140,23 @@ def a_tree(node, games, practices, notCompatible):
         #     notSolved = False 
         #     return chosenLeaf
         for aLeafNode in leafNodes:
-            #print(aLeafNode.solved)
             if (aLeafNode.solved == False):
                 isAllSolved = False
 
-        print(isAllSolved)
         if(isAllSolved):
             notSolved = False
             for aLeafNode in leafNodes:
                 leafNodeEval = check.check_soft_constraints(aLeafNode, input[6], input[15],input[17], input[7], input[16], input[14], input[11], input[13], input[12], input[14])
-                if(leafNodeEval < minEval):
+                if(check.is_complete_schedule(aLeafNode, games, practices) and leafNodeEval <= minEval):
+                    minEval = leafNodeEval
                     chosenSol = aLeafNode
             
             return chosenSol
 
         else:
-            #print("running div")
-            #print(chosenLeaf.game_schedule)
-            #i = i +1
-            #print(i)
-            # if(i == 5000):
-            #     notSolved = False
-            #     return chosenLeaf
-            for aLeafNode in list(leafNodes):
-                #div(chosenLeaf, games, practices)
+            for aLeafNode in leafNodes:
                 if (aLeafNode.solved == False):
                     div(aLeafNode, games, practices)
-    # # if all children are solved then solve yourself & move up
-    # if not checks.check_hard_constraints(node, notCompatible):
-    #     node.solved = True
-    #     node = node.parent
-    # elif checks.is_complete_schedule(node):
-    #     check_save(node)
-    #     node.solved = True
-    #     node = node.parent
-    # else:
-    #     #div(node)
-    #     for child in node.children:
-    #         if not child.solved:
-    #             a_tree(node)
 
 best_score = 9999999
 def check_save(node):
@@ -267,6 +214,18 @@ for i in input[1]:
 #         else:
 #             initial_game_input[part_assign[1]] = [ part_assign[0] ]
 
+for game in input[2]:
+    if("CMSA U12T1" in game.fullname):
+        for slot in list(practiceSchedule.keys()):
+            if(slot.day == "TU" and slot.time == 1800):
+                newSes = aTree.Session("CMSA U12T1S", 0, True, "CMSA U12T1S")
+                practiceSchedule[slot].append(newSes)
+    elif("CMSA U13T1" in game.fullname):
+        for slot in list(practiceSchedule.keys()):
+            if(slot.day == "TU" and slot.time == 1800):
+                newSes = aTree.Session("CMSA U13T1S", 0, True, "CMSA U13T1S")
+                practiceSchedule[slot].append(newSes)
+
 for partAssign in input[8]:
     if partAssign[0].is_practice:
         for slot in list(practiceSchedule.keys()):
@@ -299,6 +258,10 @@ doEveningSlots(root, input[9], input[10], input[2], input[3])
 
 final = a_tree(root, input[2], input[3], input[4])
 
+if (final == None):
+    print("Cannot create valid schedule from input.")
+    quit()
+
 #print(gameSchedule)
 #print(root.children)
 
@@ -307,7 +270,6 @@ final = a_tree(root, input[2], input[3], input[4])
 
 gameSchedule = final.game_schedule
 practiceSchedule = final.practice_schedule
-12
 evalVal = check.check_soft_constraints(final, input[6], input[15],input[17], input[7], input[16], input[14], input[11], input[13], input[12], input[14])
 #print(practiceSchedule)
 #print(gameSchedule[input[0][0]])
