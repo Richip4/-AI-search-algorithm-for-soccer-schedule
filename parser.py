@@ -148,21 +148,21 @@ def parser():
             if (partialAssignments[i][0].fullname in gameAndPracNames) == False:
                 print("Session " + partialAssignments[i][0].fullname + " in partial assignments is not a game or practice")    
                 quit()
-            if (partialAssignments[i][0].is_practice == False):
-                slotExists = False
-                for j in range(len(gameSlots)):
-                    if gameSlots[i].day == partialAssignments[i][1] and gameSlots[i].time == partialAssignments[i][2]:
-                        slotExists = True
-                        break
-            elif (partialAssignments[i][0].is_practice == True):
-                            slotExists = False
-                            for j in range(len(practiceSlots)):
-                                if practiceSlots[i].day == partialAssignments[i][1] and practiceSlots[i].time == partialAssignments[i][2]:
-                                    slotExists = True
-                                    break
-            if slotExists == False:
-                print("Slot " + partialAssignments[i][1] + str(partialAssignments[i][2]) + " for " + partialAssignments[i][0].fullname + " does not exist")
-                quit()
+            # if (partialAssignments[i][0].is_practice == False):
+            #     slotExists = False
+            #     for j in range(len(gameSlots)):
+            #         if gameSlots[i].day == partialAssignments[i][1] and gameSlots[i].time == partialAssignments[i][2]:
+            #             slotExists = True
+            #             break
+            # elif (partialAssignments[i][0].is_practice == True):
+            #                 slotExists = False
+            #                 for j in range(len(practiceSlots)):
+            #                     if practiceSlots[i].day == partialAssignments[i][1] and practiceSlots[i].time == partialAssignments[i][2]:
+            #                         slotExists = True
+            #                         break
+            # if slotExists == False:
+            #     print("Slot " + partialAssignments[i][1] + str(partialAssignments[i][2]) + " for " + partialAssignments[i][0].fullname + " does not exist")
+            #     quit()
 
     for i in range(len(pair)):
         if (pair[i][0] in gameAndPracNames) == False:
