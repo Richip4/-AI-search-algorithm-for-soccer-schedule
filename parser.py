@@ -134,10 +134,10 @@ def parser():
     for i in range(len(practices)):
         gameAndPracNames.append(practices[i].fullname)
 
-    # for i in range(len(preferences)):
-    #     if (preferences[i][1] in gameAndPracNames) == False:
-    #         print("Session " + preferences[i][1] + " in preferences is not a game or practice")    
-    #         quit()
+    for i in range(len(preferences)):
+        if (preferences[i][1] in gameAndPracNames) == False:
+            print("Session " + preferences[i][1] + " in preferences is not a game or practice")    
+            quit()
 
     for i in range(len(unwanted)):
             if (unwanted[i][0] in gameAndPracNames) == False:
