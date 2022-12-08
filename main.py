@@ -2,6 +2,7 @@ import parser as pS
 import and_tree as aTree
 import checks as check
 import random
+import copy
 #import searchControl as sC
 
 def fLeaf(aRoot):
@@ -29,41 +30,52 @@ def findLeafNodes(visited, leafNodes, node):
 
 
 def div(aLeafNode, games, practices):
-    gameSchedule = aLeafNode.game_schedule.copy()
-    theGames = games.copy()
+    #print("Running DIV")
+    gameSchedule = aLeafNode.game_schedule
+    theGames = copy.copy(games)
     for i in list(gameSchedule.keys()):
-        if(gameSchedule[i]):
+        #print(gameSchedule[i])
+        if(len(gameSchedule[i]) > 0):
             for a in gameSchedule[i]:
-                # print("games list ", games)
-                # print("theGames list ", theGames)
-                # print("Game ", a)
                 for b in theGames:
+                    #print(a.fullname, " ", b.fullname)
                     if(a.fullname == b.fullname):
+                        #print("removing game ", b.fullname)
                         theGames.remove(b)
-             
+
     for i in theGames:
         for key in list(gameSchedule.keys()):
-            newSchedule = gameSchedule.copy()
+            newSchedule = {}
+            for a in list(gameSchedule.keys()):
+                newSchedule[a] = list(gameSchedule[a])
             newSchedule[key].append(i)
             newNode = aTree.Node(newSchedule, aLeafNode.practice_schedule, aLeafNode, [])
             if(check.check_hard_constraints(newNode, input[4], input[5], input[9], input[10])):
+                #print("adding ", i.fullname)
                 aLeafNode.children.append(newNode)
 
-    practiceSchedule = aLeafNode.practice_schedule.copy()
-    thePractice = practices.copy()
+    practiceSchedule = aLeafNode.practice_schedule
+    thePractice = copy.copy(practices)
+
     for i in list(practiceSchedule.keys()):
-        if(practiceSchedule[i]):
+        if(len(practiceSchedule[i]) > 0):
             for a in practiceSchedule[i]:
                 for b in thePractice:
-                    if(a.fullname == b.fullname):
+                    #print(a.fullname, " ", b.fullname)
+                    if(a.fullname.replace(" ", "") == b.fullname.replace(" ", "")):
                         thePractice.remove(b)
+                        #print(thePractice)
                 
         for i in thePractice:
             for key in list(practiceSchedule.keys()):
-                newSchedule = practiceSchedule.copy()
+                newSchedule = {}
+                for a in list(practiceSchedule.keys()):
+                    newSchedule[a] = list(practiceSchedule[a])
                 newSchedule[key].append(i)
-                newNode = aTree.Node(gameSchedule, practiceSchedule, aLeafNode, [])
+                newNode = aTree.Node(gameSchedule, newSchedule, aLeafNode, [])
+                #print(check.check_hard_constraints(newNode, input[4], input[5], input[9], input[10]))
                 if(check.check_hard_constraints(newNode, input[4], input[5], input[9], input[10])):
+                #print("adding")
                     aLeafNode.children.append(newNode)
 
 
@@ -81,7 +93,7 @@ def doEveningSlots(aNode, eveningGameSlots, eveningPracticeSlots, games, practic
     for i in practices:
         if (i.division >= 9):
             for a in eveningPracticeSlots:
-                print("adding practice", i.division)
+                #print("adding practice", i.division)
                 newSchedule = aNode.practice_schedule.copy()
                 newSchedule[a].append(i)
                 newNode = aTree.Node(aNode.game_schedule, newSchedule, aNode, [])
@@ -90,14 +102,22 @@ def doEveningSlots(aNode, eveningGameSlots, eveningPracticeSlots, games, practic
 
 def a_tree(node, games, practices, notCompatible):
     notSolved = True
-
+    i = 0
     while(notSolved):
         chosenLeaf = fLeaf(node)
+        #print(chosenLeaf)
         if (check.is_complete_schedule(chosenLeaf, games ,practices)):
             notSolved = False 
             return chosenLeaf
 
         else:
+            #print("running div")
+            #print(chosenLeaf.game_schedule)
+            #i = i +1
+            #print(i)
+            # if(i == 5000):
+            #     notSolved = False
+            #     return chosenLeaf
             div(chosenLeaf, games, practices)
     # # if all children are solved then solve yourself & move up
     # if not checks.check_hard_constraints(node, notCompatible):
@@ -112,8 +132,6 @@ def a_tree(node, games, practices, notCompatible):
     #     for child in node.children:
     #         if not child.solved:
     #             a_tree(node)
-
-
 
 best_score = 9999999
 def check_save(node):
@@ -175,7 +193,7 @@ for partAssign in input[8]:
     if partAssign[0].is_practice:
         for slot in list(practiceSchedule.keys()):
             if (slot.day in partAssign[1] and slot.time == partAssign[2]):
-                print("slot day: ", slot.day, "slot time ", slot.time, " practice.time ", partAssign[2])
+                #print("slot day: ", slot.day, "slot time ", slot.time, " practice.time ", partAssign[2])
                 practiceSchedule[slot].append(partAssign[0])
                 for b in input[3]:
                     if(partAssign[0].fullname == b.fullname):
@@ -195,6 +213,7 @@ for partAssign in input[8]:
 
 # a_tree(and_tree.root)
 
+#print(gameSchedule)
 root = aTree.Node(gameSchedule, practiceSchedule, None, [])
 andTree = aTree.Tree(root)
 
@@ -202,11 +221,20 @@ doEveningSlots(root, input[9], input[10], input[2], input[3])
 
 final = a_tree(root, input[2], input[3], input[4])
 
+#print(gameSchedule)
+#print(root.children)
+
+
 #Printing output-----------------------
 
 gameSchedule = final.game_schedule
 practiceSchedule = final.practice_schedule
-print("Eval-value: ", best_score)
+12
+evalVal = check.check_soft_constraints(final, input[6], input[15],input[17], input[7], input[16], input[14], input[11], input[13], input[12], input[14])
+#print(practiceSchedule)
+#print(gameSchedule[input[0][0]])
+#print(gameSchedule[input[0][1]])
+print("Eval-value:", evalVal)
 for slot, sList in gameSchedule.items():
     if(slot.time >= 1000):
         time = str(slot.time)
