@@ -100,8 +100,8 @@ def check_hard_constraints(node, notCompatible, unwanted, eveningGameSlots, even
                 for g_session in node.game_schedule[g_slot]:
                     for p_session in node.practice_schedule[p_slot]:
                         # u12t1s cant overlap
-                        if (u12t1s_requested and ("U12T1" in g_session.league) and ("U12T1S" in p_session)) or (
-                                u13t1s_requested and ("U13T1" in g_session.league) and ("U13T1S" in p_session)):
+                        if (u12t1s_requested and ("U12T1" in g_session.league) and ("U12T1S" in p_session.league)) or (
+                                u13t1s_requested and ("U13T1" in g_session.league) and ("U13T1S" in p_session.league)):
                             return False
 
                         # check nocompat same division
