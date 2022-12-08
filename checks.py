@@ -166,7 +166,7 @@ def check_soft_constraints(node, pref, penGameMin, penPracticeMin, pairs, penNot
                 if session.fullname in pref_slot:
                     if slot.day + " " + str(slot.time) != pref_slot[0].replace(":", ""):
                         pref_eval = pref_eval + int(pref_slot[2])
-    print(pref_eval)
+
 
     # pair penalty
     gameSchedule = node.game_schedule
@@ -185,14 +185,19 @@ def check_soft_constraints(node, pref, penGameMin, penPracticeMin, pairs, penNot
 
                 isIn = False
 
-
     # secdiff soft constraint
     secdiff_eval = 0
     for slot in node.game_schedule:
+        checked_sess = ""
         for session in node.game_schedule[slot]:
+            if checked_sess == session.league:
+                continue
             for session2 in node.game_schedule[slot]:
                 if (session.league == session2.league) and (session.division != session2.division):
+                    checked_sess = session.league
                     secdiff_eval = secdiff_eval + penSecdiff
+                    break
+    print(secdiff_eval)
 
     eval = min_eval*wMinFill + pref_eval*wPref + pair_eval*wPair + secdiff_eval*wSecDiff
     return eval
